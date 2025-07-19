@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orçamento do Casamento - Gabriel & Leliane</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -42,34 +43,90 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
-        
+
         .font-dancing {
             font-family: 'Dancing Script', cursive;
         }
-        
+
         .font-poppins {
             font-family: 'Poppins', sans-serif;
         }
-        
+
         .gradient-bg {
             background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 25%, #fbcfe8 50%, #f9a8d4 75%, #f472b6 100%);
         }
-        
+
         .card-hover {
             transition: all 0.3s ease;
         }
-        
+
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        
+
         .progress-bar {
             transition: width 0.5s ease-in-out;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #ec4899;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .connection-online {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .connection-offline {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
         }
     </style>
 </head>
 <body class="font-poppins gradient-bg min-h-screen">
+    <!-- Connection Status -->
+    <div id="connection-status" class="connection-status connection-offline">
+        <i class="fas fa-wifi mr-1"></i>
+        <span>Conectando...</span>
+    </div>
+
     <!-- Header -->
     <header class="bg-gradient-to-r from-rose-400 via-rose-500 to-gold-400 text-white py-4 sm:py-6 shadow-lg">
         <div class="container mx-auto px-2 sm:px-4">
@@ -94,13 +151,15 @@
                     <i class="fas fa-calculator mr-2 sm:mr-3 text-sm sm:text-base"></i>
                     Calculadora de Orçamento
                 </h3>
-                
+
                 <div class="space-y-4">
                     <div>
                         <label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Orçamento Total (R$)</label>
-                        <input type="number" id="total-budget" placeholder="50000" class="w-full px-3 sm:px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm sm:text-base" oninput="calculateBudget()">
+                        <input type="number" id="total-budget" placeholder="50000" 
+                               class="w-full px-3 sm:px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm sm:text-base" 
+                               oninput="updateTotalBudget()">
                     </div>
-                    
+
                     <div class="grid grid-cols-2 gap-3 sm:gap-4 text-center">
                         <div class="bg-rose-50 p-3 sm:p-4 rounded-lg">
                             <div class="text-lg sm:text-xl md:text-2xl font-bold text-rose-600" id="total-spent">R$ 0</div>
@@ -111,7 +170,7 @@
                             <div class="text-xs sm:text-sm text-gray-600">Restante</div>
                         </div>
                     </div>
-                    
+
                     <div class="w-full bg-gray-200 rounded-full h-3 sm:h-4">
                         <div id="budget-progress" class="progress-bar bg-gradient-to-r from-green-400 to-rose-500 h-3 sm:h-4 rounded-full" style="width: 0%"></div>
                     </div>
@@ -120,38 +179,40 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
                 <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-gold-600 mb-4 flex items-center">
                     <i class="fas fa-chart-pie mr-2 sm:mr-3 text-sm sm:text-base"></i>
-                    Distribuição por Categoria
+                    Resumo por Categoria
                 </h3>
-                
-                <div class="space-y-3">
-                    <div class="flex justify-between items-center text-xs sm:text-sm">
-                        <span class="text-gray-700">Local & Decoração</span>
-                        <span class="font-semibold text-rose-600">35%</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs sm:text-sm">
-                        <span class="text-gray-700">Comida & Bebida</span>
-                        <span class="font-semibold text-gold-600">30%</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs sm:text-sm">
-                        <span class="text-gray-700">Fotografia & Vídeo</span>
-                        <span class="font-semibold text-green-600">15%</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs sm:text-sm">
-                        <span class="text-gray-700">Música & Entretenimento</span>
-                        <span class="font-semibold text-blue-600">8%</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs sm:text-sm">
-                        <span class="text-gray-700">Vestimentas & Beleza</span>
-                        <span class="font-semibold text-purple-600">7%</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs sm:text-sm">
-                        <span class="text-gray-700">Outros & Imprevistos</span>
-                        <span class="font-semibold text-gray-600">5%</span>
-                    </div>
+
+                <div id="category-summary" class="space-y-3">
+                    <!-- Será preenchido dinamicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
+            <!-- Budget Distribution Chart -->
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie mr-2 sm:mr-3 text-sm sm:text-base"></i>
+                    Distribuição do Orçamento
+                </h3>
+                <div class="relative h-64 sm:h-80">
+                    <canvas id="budgetDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Spending Progress Chart -->
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-gold-600 mb-4 flex items-center">
+                    <i class="fas fa-chart-bar mr-2 sm:mr-3 text-sm sm:text-base"></i>
+                    Progresso dos Gastos
+                </h3>
+                <div class="relative h-64 sm:h-80">
+                    <canvas id="spendingProgressChart"></canvas>
                 </div>
             </div>
         </div>
@@ -163,16 +224,49 @@
                     <i class="fas fa-list-ul mr-2 sm:mr-3 text-sm sm:text-base"></i>
                     Categorias de Gastos
                 </h3>
-                <button onclick="addBudgetItem()" class="px-3 sm:px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition text-sm sm:text-base shrink-0">
+                <button onclick="showAddItemModal()" class="px-3 sm:px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition text-sm sm:text-base shrink-0">
                     <i class="fas fa-plus mr-1 sm:mr-2"></i>Adicionar Item
                 </button>
             </div>
-            
+
             <div class="grid gap-3 sm:gap-4" id="budget-categories">
-                <!-- Budget categories will be populated by JavaScript -->
+                <!-- Será preenchido dinamicamente -->
+            </div>
+        </div>
+
+        <!-- Status de Sincronização -->
+        <div class="text-center">
+            <div id="sync-status" class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg text-sm">
+                <i class="fas fa-sync-alt mr-2"></i>
+                <span>Carregando...</span>
             </div>
         </div>
     </main>
+
+    <!-- Modal para Adicionar Item -->
+    <div id="add-item-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Adicionar Nova Categoria</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nome da Categoria</label>
+                    <input type="text" id="new-category-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Ex: Decoração">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Porcentagem do Orçamento (%)</label>
+                    <input type="number" id="new-category-percentage" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Ex: 15" min="1" max="100">
+                </div>
+            </div>
+            <div class="flex space-x-3 mt-6">
+                <button onclick="hideAddItemModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                    Cancelar
+                </button>
+                <button onclick="addBudgetItem()" class="flex-1 px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition">
+                    Adicionar
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-rose-600 text-white py-6 sm:py-8 mt-8 sm:mt-12">
@@ -189,363 +283,588 @@
     </footer>
 
     <script>
-        // API Configuration
-        const API_BASE_URL = window.location.origin + '/api';
-        const USE_LOCAL_STORAGE = false; // Backend is ready
-        
-        // Simplified data structure for budget only
-        let weddingData = {
-            id: null,
+        // Configuração da API
+        const API_BASE = "https://api-orcamento-7uwr.onrender.com";
+
+        // Estado da aplicação
+        let appState = {
+            isOnline: false,
+            isLoading: false,
             totalBudget: 0,
-            budgetItems: [
-                { id: 1, category: "Local & Decoração", amount: 0, percentage: 35, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
-                { id: 2, category: "Comida & Bebida", amount: 0, percentage: 30, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
-                { id: 3, category: "Fotografia & Vídeo", amount: 0, percentage: 15, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
-                { id: 4, category: "Música & Entretenimento", amount: 0, percentage: 8, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
-                { id: 5, category: "Vestimentas & Beleza", amount: 0, percentage: 7, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
-                { id: 6, category: "Outros & Imprevistos", amount: 0, percentage: 5, completed: false, estimatedCost: 0, actualCost: 0, notes: '' }
-            ]
+            budgetItems: []
         };
 
-        // API Helper Functions
-        async function apiCall(endpoint, method = 'GET', data = null) {
-            if (USE_LOCAL_STORAGE) {
-                return null;
-            }
-            
+        // Chart instances
+        let budgetDistributionChart = null;
+        let spendingProgressChart = null;
+
+        // Inicialização da aplicação
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        // Inicializar aplicação
+        async function initializeApp() {
+            updateSyncStatus('Inicializando aplicação...', true);
+            await checkBackendConnection();
+            await loadData();
+            initializeCharts();
+            updateSyncStatus('Aplicação carregada!', false);
+        }
+
+        // Verificar conexão com backend
+        async function checkBackendConnection() {
             try {
-                const config = {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                };
-                
-                if (data) {
-                    config.body = JSON.stringify(data);
+                const response = await fetch(`${API_BASE}/api/health`, { timeout: 5000 });
+                if (response.ok) {
+                    updateConnectionStatus(true);
+                    return true;
                 }
-                
-                const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                return await response.json();
             } catch (error) {
-                console.error('API Error:', error);
-                showError('Erro de conexão com o servidor. Verifique sua internet.');
-                return null;
+                console.error('Backend não disponível:', error);
             }
-        }
-        
-        // Backend API Methods
-        const WeddingAPI = {
-            async createWedding(weddingData) {
-                return await apiCall('/wedding', 'POST', weddingData);
-            },
-            
-            async getWedding(id) {
-                return await apiCall(`/wedding/${id}`, 'GET');
-            },
-            
-            async updateWedding(id, data) {
-                return await apiCall(`/wedding/${id}`, 'PUT', data);
-            },
-            
-            async createBudgetItem(weddingId, budgetData) {
-                return await apiCall(`/wedding/${weddingId}/budget`, 'POST', budgetData);
-            },
-            
-            async updateBudgetItem(itemId, data) {
-                return await apiCall(`/budget/${itemId}`, 'PUT', data);
-            },
-            
-            async deleteBudgetItem(itemId) {
-                return await apiCall(`/budget/${itemId}`, 'DELETE');
-            }
-        };
-        
-        // Error Display Function
-        function showError(message) {
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-            errorDiv.innerHTML = `
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>${message}</span>
-                    <button onclick="this.parentElement.parentElement.remove()" class="ml-2 text-white hover:text-gray-200">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-            document.body.appendChild(errorDiv);
-            
-            setTimeout(() => {
-                if (errorDiv.parentElement) {
-                    errorDiv.remove();
-                }
-            }, 5000);
-        }
-        
-        // Success Display Function
-        function showSuccess(message) {
-            const successDiv = document.createElement('div');
-            successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-            successDiv.innerHTML = `
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-check-circle"></i>
-                    <span>${message}</span>
-                    <button onclick="this.parentElement.parentElement.remove()" class="ml-2 text-white hover:text-gray-200">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-            document.body.appendChild(successDiv);
-            
-            setTimeout(() => {
-                if (successDiv.parentElement) {
-                    successDiv.remove();
-                }
-            }, 3000);
+            updateConnectionStatus(false);
+            return false;
         }
 
-        // Load data from localStorage or API
+        // Carregar dados do backend
         async function loadData() {
-            if (USE_LOCAL_STORAGE) {
-                const saved = localStorage.getItem('weddingBudgetData');
-                if (saved) {
-                    weddingData = { ...weddingData, ...JSON.parse(saved) };
+            try {
+                updateSyncStatus('Carregando dados...', true);
+
+                // Carregar configuração
+                const configResponse = await fetch(`${API_BASE}/api/config`);
+                if (configResponse.ok) {
+                    const config = await configResponse.json();
+                    appState.totalBudget = config.total_budget || 0;
+                    document.getElementById('total-budget').value = appState.totalBudget;
                 }
-                return;
-            }
-            
-            // Try to load from API
-            const weddingId = localStorage.getItem('currentWeddingId');
-            
-            if (weddingId) {
-                const apiData = await WeddingAPI.getWedding(weddingId);
-                if (apiData) {
-                    weddingData = { 
-                        id: apiData.id,
-                        totalBudget: apiData.totalBudget,
-                        budgetItems: apiData.budgetItems || weddingData.budgetItems
-                    };
+
+                // Carregar itens do orçamento
+                const itemsResponse = await fetch(`${API_BASE}/api/budget-items`);
+                if (itemsResponse.ok) {
+                    appState.budgetItems = await itemsResponse.json();
                 }
+
+                renderBudgetItems();
+                updateCalculations();
+                updateCharts();
+                updateSyncStatus('Dados carregados!', false);
+
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                updateSyncStatus('Erro ao carregar dados', false);
+                showNotification('Erro ao carregar dados do servidor', 'error');
             }
         }
 
-        // Save data to localStorage and API
-        async function saveData() {            
-            if (USE_LOCAL_STORAGE) {
-                localStorage.setItem('weddingBudgetData', JSON.stringify(weddingData));
-                return;
-            }
-            
-            // Save to API
-            if (weddingData.id) {
-                await WeddingAPI.updateWedding(weddingData.id, {
-                    totalBudget: weddingData.totalBudget
+        // Atualizar orçamento total
+        async function updateTotalBudget() {
+            const value = parseFloat(document.getElementById('total-budget').value) || 0;
+            appState.totalBudget = value;
+
+            try {
+                await fetch(`${API_BASE}/api/config`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ total_budget: value })
                 });
-            } else {
-                const newWedding = await WeddingAPI.createWedding({
-                    totalBudget: weddingData.totalBudget,
-                    coupleInfo: {
-                        bride: { name: 'Leliane' },
-                        groom: { name: 'Gabriel' }
-                    }
-                });
-                if (newWedding) {
-                    weddingData.id = newWedding.id;
-                    localStorage.setItem('currentWeddingId', newWedding.id);
-                    
-                    // Load the complete data from backend
-                    const completeData = await WeddingAPI.getWedding(newWedding.id);
-                    if (completeData) {
-                        weddingData.budgetItems = completeData.budgetItems || weddingData.budgetItems;
-                        showSuccess('Orçamento criado com sucesso!');
-                    }
-                }
+                updateCalculations();
+            } catch (error) {
+                console.error('Erro ao atualizar orçamento:', error);
+                showNotification('Erro ao salvar orçamento total', 'error');
             }
         }
 
-        // Initialize wedding plan if needed
-        async function initializeWedding() {
-            if (!weddingData.id && !USE_LOCAL_STORAGE) {
-                await saveData();
-            }
-        }
-
-        // Render budget items
+        // Renderizar itens do orçamento
         function renderBudgetItems() {
             const container = document.getElementById('budget-categories');
             container.innerHTML = '';
-            
-            weddingData.budgetItems.forEach(item => {
-                const budgetAmount = (weddingData.totalBudget * item.percentage / 100);
+
+            if (appState.budgetItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-plus-circle text-3xl mb-2"></i>
+                        <p>Nenhuma categoria ainda. Adicione sua primeira categoria!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            appState.budgetItems.forEach(item => {
+                const budgetAmount = (appState.totalBudget * item.percentage / 100);
+                const progressPercentage = budgetAmount > 0 ? Math.min((item.amount / budgetAmount) * 100, 100) : 0;
+                const isOverBudget = item.amount > budgetAmount;
+
                 const itemElement = document.createElement('div');
-                itemElement.className = 'p-4 bg-gradient-to-r from-rose-50 to-gold-50 rounded-lg border border-rose-200';
+                itemElement.className = 'p-4 bg-gradient-to-r from-rose-50 to-gold-50 rounded-lg border border-rose-200 hover:shadow-md transition';
                 itemElement.innerHTML = `
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center space-x-3">
                             <input type="checkbox" ${item.completed ? 'checked' : ''} 
                                    onchange="toggleBudgetItem(${item.id})"
                                    class="w-5 h-5 text-rose-600 rounded focus:ring-rose-500">
-                            <span class="font-semibold text-gray-800">${item.category}</span>
+                            <span class="font-semibold text-gray-800 ${item.completed ? 'line-through opacity-70' : ''}">${item.category}</span>
                             <span class="text-sm text-gray-600">(${item.percentage}%)</span>
                         </div>
                         <button onclick="removeBudgetItem(${item.id})" 
-                                class="text-red-500 hover:text-red-700 transition p-1">
+                                class="text-red-500 hover:text-red-700 transition p-1 rounded hover:bg-red-50">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
-                            <label class="text-xs text-gray-600">Valor Alocado</label>
-                            <div class="text-lg font-bold text-green-600">R$ ${budgetAmount.toLocaleString('pt-BR')}</div>
+                            <label class="text-xs text-gray-600">Valor Previsto</label>
+                            <div class="text-lg font-bold text-green-600">R$ ${budgetAmount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
                         </div>
                         <div>
                             <label class="text-xs text-gray-600">Valor Gasto</label>
-                            <input type="number" value="${item.amount}" 
+                            <input type="number" value="${item.amount || 0}" 
                                    onchange="updateBudgetItemAmount(${item.id}, this.value)"
-                                   class="w-full px-2 py-1 border border-gray-300 rounded text-rose-600 font-semibold">
+                                   class="w-full px-2 py-1 border border-gray-300 rounded text-rose-600 font-semibold text-sm">
                         </div>
                     </div>
                     <div class="mt-3">
                         <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-gradient-to-r from-green-400 to-rose-500 h-2 rounded-full" 
-                                 style="width: ${Math.min((item.amount / budgetAmount) * 100, 100)}%"></div>
+                            <div class="h-2 rounded-full ${isOverBudget ? 'bg-red-500' : 'bg-gradient-to-r from-green-400 to-rose-500'}" 
+                                 style="width: ${progressPercentage}%"></div>
                         </div>
-                        <div class="text-xs text-gray-600 mt-1">
-                            ${((item.amount / budgetAmount) * 100).toFixed(1)}% utilizado
+                        <div class="text-xs ${isOverBudget ? 'text-red-600' : 'text-gray-600'} mt-1">
+                            ${progressPercentage.toFixed(1)}% utilizado ${isOverBudget ? '(acima do orçamento!)' : ''}
                         </div>
                     </div>
                 `;
                 container.appendChild(itemElement);
             });
-            
-            calculateBudget();
+
+            updateCategorySummary();
         }
 
-        // Calculate budget totals
-        function calculateBudget() {
-            const totalBudgetInput = document.getElementById('total-budget');
-            const totalBudget = parseFloat(totalBudgetInput.value) || 0;
-            
-            weddingData.totalBudget = totalBudget;
-            
-            const totalSpent = weddingData.budgetItems.reduce((sum, item) => sum + (item.amount || 0), 0);
-            const remaining = totalBudget - totalSpent;
-            const percentage = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
-            
-            document.getElementById('total-spent').textContent = `R$ ${totalSpent.toLocaleString('pt-BR')}`;
-            document.getElementById('remaining-budget').textContent = `R$ ${remaining.toLocaleString('pt-BR')}`;
+        // Atualizar resumo por categoria
+        function updateCategorySummary() {
+            const container = document.getElementById('category-summary');
+            container.innerHTML = '';
+
+            if (appState.budgetItems.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-sm">Adicione categorias para ver o resumo</p>';
+                return;
+            }
+
+            appState.budgetItems.forEach(item => {
+                const budgetAmount = (appState.totalBudget * item.percentage / 100);
+                const progressPercentage = budgetAmount > 0 ? Math.min((item.amount / budgetAmount) * 100, 100) : 0;
+
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center text-sm';
+                div.innerHTML = `
+                    <span class="text-gray-700 ${item.completed ? 'line-through opacity-70' : ''}">${item.category}</span>
+                    <div class="text-right">
+                        <span class="font-semibold text-rose-600">${item.percentage}%</span>
+                        <div class="text-xs text-gray-500">R$ ${(item.amount || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Atualizar cálculos
+        function updateCalculations() {
+            const totalSpent = appState.budgetItems.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+            const remaining = appState.totalBudget - totalSpent;
+            const percentage = appState.totalBudget > 0 ? (totalSpent / appState.totalBudget) * 100 : 0;
+
+            document.getElementById('total-spent').textContent = `R$ ${totalSpent.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('remaining-budget').textContent = `R$ ${remaining.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('budget-percentage').textContent = `${percentage.toFixed(1)}%`;
             document.getElementById('budget-progress').style.width = `${Math.min(percentage, 100)}%`;
-            
-            // Update remaining budget color
+
+            // Atualizar cor do valor restante
             const remainingEl = document.getElementById('remaining-budget');
             if (remaining < 0) {
                 remainingEl.className = remainingEl.className.replace('text-green-600', 'text-red-600');
             } else {
                 remainingEl.className = remainingEl.className.replace('text-red-600', 'text-green-600');
             }
-            
-            saveData();
-            renderBudgetItems();
+
+            updateCategorySummary();
+            updateCharts();
         }
 
-        // Toggle budget item completion
-        async function toggleBudgetItem(itemId) {
-            const item = weddingData.budgetItems.find(i => i.id === itemId);
-            if (item) {
-                item.completed = !item.completed;
-                
-                if (!USE_LOCAL_STORAGE && weddingData.id) {
-                    await WeddingAPI.updateBudgetItem(itemId, { completed: item.completed });
-                }
-                
-                await saveData();
-                renderBudgetItems();
-            }
-        }
-
-        // Update budget item amount
-        async function updateBudgetItemAmount(itemId, newAmount) {
-            const item = weddingData.budgetItems.find(i => i.id === itemId);
-            if (item) {
-                item.amount = parseFloat(newAmount) || 0;
-                
-                if (!USE_LOCAL_STORAGE && weddingData.id) {
-                    await WeddingAPI.updateBudgetItem(itemId, { amount: item.amount });
-                }
-                
-                await saveData();
-                calculateBudget();
-            }
-        }
-
-        // Add new budget item
-        async function addBudgetItem() {
-            const category = prompt('Nome da categoria:');
-            const percentage = parseFloat(prompt('Porcentagem do orçamento (0-100):'));
-            
-            if (category && !isNaN(percentage) && percentage > 0 && percentage <= 100) {
-                const newId = Math.max(...weddingData.budgetItems.map(item => item.id), 0) + 1;
-                
-                const newBudgetItem = {
-                    id: newId,
-                    category: category,
-                    amount: 0,
-                    percentage: percentage,
-                    completed: false,
-                    estimatedCost: 0,
-                    actualCost: 0,
-                    notes: ''
-                };
-                
-                weddingData.budgetItems.push(newBudgetItem);
-                
-                if (!USE_LOCAL_STORAGE && weddingData.id) {
-                    const apiBudgetItem = await WeddingAPI.createBudgetItem(weddingData.id, newBudgetItem);
-                    if (apiBudgetItem) {
-                        weddingData.budgetItems[weddingData.budgetItems.length - 1].id = apiBudgetItem.id;
-                        showSuccess('Item de orçamento adicionado!');
+        // Inicializar gráficos
+        function initializeCharts() {
+            // Gráfico de distribuição do orçamento (Pie Chart)
+            const distributionCtx = document.getElementById('budgetDistributionChart').getContext('2d');
+            budgetDistributionChart = new Chart(distributionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: [
+                            '#ec4899', '#f472b6', '#f9a8d4', '#fbcfe8', '#fce7f3',
+                            '#f59e0b', '#fcd34d', '#fde68a', '#fef3c7', '#fffbeb',
+                            '#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#d1fae5'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${label}: ${percentage}% (R$ ${value.toLocaleString('pt-BR', {minimumFractionDigits: 2})})`;
+                                }
+                            }
+                        }
                     }
                 }
-                
-                await saveData();
-                renderBudgetItems();
-            }
-        }
+            });
 
-        // Remove budget item
-        async function removeBudgetItem(itemId) {
-            if (!USE_LOCAL_STORAGE && weddingData.id) {
-                const success = await WeddingAPI.deleteBudgetItem(itemId);
-                if (!success) {
-                    showError('Erro ao remover item do servidor');
-                    return;
+            // Gráfico de progresso de gastos (Bar Chart)
+            const progressCtx = document.getElementById('spendingProgressChart').getContext('2d');
+            spendingProgressChart = new Chart(progressCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Previsto',
+                            data: [],
+                            backgroundColor: '#10b981',
+                            borderColor: '#059669',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Gasto',
+                            data: [],
+                            backgroundColor: '#ec4899',
+                            borderColor: '#db2777',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y;
+                                    return `${label}: R$ ${value.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toLocaleString('pt-BR', {minimumFractionDigits: 0});
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-            
-            weddingData.budgetItems = weddingData.budgetItems.filter(i => i.id !== itemId);
-            await saveData();
-            renderBudgetItems();
-            showSuccess('Item removido com sucesso!');
+            });
+
+            updateCharts();
         }
 
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', async function() {
-            await loadData();
-            await initializeWedding();
-            
-            renderBudgetItems();
-            calculateBudget();
-            
-            // Set total budget if saved
-            if (weddingData.totalBudget > 0) {
-                document.getElementById('total-budget').value = weddingData.totalBudget;
+        // Atualizar gráficos
+        function updateCharts() {
+            if (!budgetDistributionChart || !spendingProgressChart) return;
+
+            // Dados para o gráfico de distribuição
+            const labels = appState.budgetItems.map(item => item.category);
+            const budgetAmounts = appState.budgetItems.map(item => appState.totalBudget * item.percentage / 100);
+            const spentAmounts = appState.budgetItems.map(item => parseFloat(item.amount) || 0);
+
+            // Atualizar gráfico de distribuição do orçamento
+            budgetDistributionChart.data.labels = labels;
+            budgetDistributionChart.data.datasets[0].data = budgetAmounts;
+            budgetDistributionChart.update('none');
+
+            // Atualizar gráfico de progresso de gastos
+            spendingProgressChart.data.labels = labels;
+            spendingProgressChart.data.datasets[0].data = budgetAmounts;
+            spendingProgressChart.data.datasets[1].data = spentAmounts;
+            spendingProgressChart.update('none');
+        }
+
+        // Modal para adicionar item
+        function showAddItemModal() {
+            document.getElementById('add-item-modal').classList.remove('hidden');
+            document.getElementById('new-category-name').focus();
+        }
+
+        function hideAddItemModal() {
+            document.getElementById('add-item-modal').classList.add('hidden');
+            document.getElementById('new-category-name').value = '';
+            document.getElementById('new-category-percentage').value = '';
+        }
+
+        // Adicionar novo item
+        async function addBudgetItem() {
+            const category = document.getElementById('new-category-name').value.trim();
+            const percentage = parseFloat(document.getElementById('new-category-percentage').value);
+
+            if (!category) {
+                showNotification('Por favor, insira o nome da categoria', 'warning');
+                return;
+            }
+
+            if (!percentage || percentage <= 0 || percentage > 100) {
+                showNotification('Porcentagem deve estar entre 1 e 100', 'warning');
+                return;
+            }
+
+            // Verificar se a soma das porcentagens não ultrapassa 100%
+            const currentTotalPercentage = appState.budgetItems.reduce((sum, item) => sum + item.percentage, 0);
+            if (currentTotalPercentage + percentage > 100) {
+                const remainingPercentage = 100 - currentTotalPercentage;
+                showNotification(`Porcentagem excede o limite! Disponível: ${remainingPercentage.toFixed(1)}%`, 'error');
+                return;
+            }
+
+            try {
+                updateSyncStatus('Adicionando categoria...', true);
+
+                const response = await fetch(`${API_BASE}/api/budget-items`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        category: category,
+                        percentage: percentage,
+                        amount: 0,
+                        completed: false
+                    })
+                });
+
+                if (response.ok) {
+                    await loadData();
+                    hideAddItemModal();
+                    showNotification('Categoria adicionada com sucesso!', 'success');
+                } else {
+                    throw new Error('Erro ao adicionar categoria');
+                }
+            } catch (error) {
+                console.error('Erro ao adicionar item:', error);
+                showNotification('Erro ao adicionar categoria', 'error');
+            } finally {
+                updateSyncStatus('Pronto', false);
+            }
+        }
+
+        // Toggle status do item
+        async function toggleBudgetItem(id) {
+            const item = appState.budgetItems.find(item => item.id === id);
+            if (!item) return;
+
+            try {
+                updateSyncStatus('Atualizando status...', true);
+
+                const response = await fetch(`${API_BASE}/api/budget-items/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...item,
+                        completed: !item.completed
+                    })
+                });
+
+                if (response.ok) {
+                    await loadData();
+                    showNotification(item.completed ? 'Item desmarcado' : 'Item marcado como concluído', 'success');
+                } else {
+                    throw new Error('Erro ao atualizar status');
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar status:', error);
+                showNotification('Erro ao atualizar status', 'error');
+            } finally {
+                updateSyncStatus('Pronto', false);
+            }
+        }
+
+        // Atualizar valor do item
+        async function updateBudgetItemAmount(id, newAmount) {
+            const item = appState.budgetItems.find(item => item.id === id);
+            if (!item) return;
+
+            const amount = parseFloat(newAmount) || 0;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/budget-items/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...item,
+                        amount: amount
+                    })
+                });
+
+                if (response.ok) {
+                    item.amount = amount;
+                    updateCalculations();
+                } else {
+                    throw new Error('Erro ao atualizar valor');
+                }
+            } catch (error) {
+                console.error('Erro ao atualizar valor:', error);
+                showNotification('Erro ao atualizar valor', 'error');
+            }
+        }
+
+        // Remover item
+        async function removeBudgetItem(id) {
+            if (!confirm('Tem certeza que deseja remover esta categoria?')) {
+                return;
+            }
+
+            try {
+                updateSyncStatus('Removendo categoria...', true);
+
+                const response = await fetch(`${API_BASE}/api/budget-items/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    await loadData();
+                    showNotification('Categoria removida com sucesso!', 'warning');
+                } else {
+                    throw new Error('Erro ao remover categoria');
+                }
+            } catch (error) {
+                console.error('Erro ao remover item:', error);
+                showNotification('Erro ao remover categoria', 'error');
+            } finally {
+                updateSyncStatus('Pronto', false);
+            }
+        }
+
+        // Funções de UI
+        function updateConnectionStatus(isOnline) {
+            appState.isOnline = isOnline;
+            const statusEl = document.getElementById('connection-status');
+
+            if (isOnline) {
+                statusEl.className = 'connection-status connection-online';
+                statusEl.innerHTML = '<i class="fas fa-wifi mr-1"></i><span>Online</span>';
+            } else {
+                statusEl.className = 'connection-status connection-offline';
+                statusEl.innerHTML = '<i class="fas fa-wifi-slash mr-1"></i><span>Offline</span>';
+            }
+        }
+
+        function updateSyncStatus(message, isLoading = false) {
+            const syncEl = document.getElementById('sync-status');
+
+            if (isLoading) {
+                syncEl.className = 'inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg text-sm';
+                syncEl.innerHTML = `<div class="loading mr-2"></div><span>${message}</span>`;
+            } else {
+                syncEl.className = 'inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-lg text-sm';
+                syncEl.innerHTML = `<i class="fas fa-check mr-2"></i><span>${message}</span>`;
+            }
+        }
+
+        // Sistema de notificações
+        function showNotification(message, type = 'info', duration = 5000) {
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                warning: 'bg-yellow-500',
+                info: 'bg-blue-500'
+            };
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-triangle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+
+            const notificationDiv = document.createElement('div');
+            notificationDiv.className = `notification ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg max-w-sm`;
+            notificationDiv.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <i class="fas ${icons[type]}"></i>
+                    <span class="text-sm">${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-2 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(notificationDiv);
+
+            // Mostrar notificação
+            setTimeout(() => notificationDiv.classList.add('show'), 100);
+
+            // Remover automaticamente
+            setTimeout(() => {
+                if (notificationDiv.parentElement) {
+                    notificationDiv.classList.remove('show');
+                    setTimeout(() => notificationDiv.remove(), 300);
+                }
+            }, duration);
+        }
+
+        // Detectar mudanças de conectividade
+        window.addEventListener('online', () => {
+            updateConnectionStatus(true);
+            showNotification('Conexão restaurada!', 'success');
+            loadData();
+        });
+
+        window.addEventListener('offline', () => {
+            updateConnectionStatus(false);
+            showNotification('Modo offline', 'warning');
+        });
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                hideAddItemModal();
             }
         });
     </script>
