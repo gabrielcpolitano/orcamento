@@ -160,7 +160,7 @@
 
 
     <!-- Navigation -->
-    <nav class="bg-rose-600 text-white sticky top--1 sm:top-20 z-40">
+    <nav class="bg-rose-600 text-white sticky top--1 sm:top--1 z-40">
         <div class="container mx-auto px-2 sm:px-4">
             <div class="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 sm:gap-4 py-3">
                 <button onclick="showSection('planning')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
@@ -530,7 +530,7 @@
     <script>
         // API Configuration
         const API_BASE_URL = window.location.origin + '/api';
-        const USE_LOCAL_STORAGE = true; // Set to false when backend is ready
+        const USE_LOCAL_STORAGE = false; // Backend is now ready
         
         // Initial data structure for backend compatibility
         let weddingData = {
@@ -614,54 +614,54 @@
         const WeddingAPI = {
             // User/Wedding Profile
             async createWedding(weddingData) {
-                return await apiCall('/weddings', 'POST', weddingData);
+                return await apiCall('/wedding', 'POST', weddingData);
             },
             
             async getWedding(id) {
-                return await apiCall(`/weddings/${id}`, 'GET');
+                return await apiCall(`/wedding/${id}`, 'GET');
             },
             
             async updateWedding(id, data) {
-                return await apiCall(`/weddings/${id}`, 'PUT', data);
+                return await apiCall(`/wedding/${id}`, 'PUT', data);
             },
             
             async deleteWedding(id) {
-                return await apiCall(`/weddings/${id}`, 'DELETE');
+                return await apiCall(`/wedding/${id}`, 'DELETE');
             },
             
             // Tasks Management
             async getTasks(weddingId, type = null) {
                 const typeParam = type ? `?type=${type}` : '';
-                return await apiCall(`/weddings/${weddingId}/tasks${typeParam}`, 'GET');
+                return await apiCall(`/wedding/${weddingId}/tasks${typeParam}`, 'GET');
             },
             
             async createTask(weddingId, taskData) {
-                return await apiCall(`/weddings/${weddingId}/tasks`, 'POST', taskData);
+                return await apiCall(`/wedding/${weddingId}/tasks`, 'POST', taskData);
             },
             
-            async updateTask(weddingId, taskId, data) {
-                return await apiCall(`/weddings/${weddingId}/tasks/${taskId}`, 'PUT', data);
+            async updateTask(taskId, data) {
+                return await apiCall(`/tasks/${taskId}`, 'PUT', data);
             },
             
-            async deleteTask(weddingId, taskId) {
-                return await apiCall(`/weddings/${weddingId}/tasks/${taskId}`, 'DELETE');
+            async deleteTask(taskId) {
+                return await apiCall(`/tasks/${taskId}`, 'DELETE');
             },
             
             // Budget Management
             async getBudgetItems(weddingId) {
-                return await apiCall(`/weddings/${weddingId}/budget`, 'GET');
+                return await apiCall(`/wedding/${weddingId}/budget`, 'GET');
             },
             
             async createBudgetItem(weddingId, budgetData) {
-                return await apiCall(`/weddings/${weddingId}/budget`, 'POST', budgetData);
+                return await apiCall(`/wedding/${weddingId}/budget`, 'POST', budgetData);
             },
             
-            async updateBudgetItem(weddingId, itemId, data) {
-                return await apiCall(`/weddings/${weddingId}/budget/${itemId}`, 'PUT', data);
+            async updateBudgetItem(itemId, data) {
+                return await apiCall(`/budget/${itemId}`, 'PUT', data);
             },
             
-            async deleteBudgetItem(weddingId, itemId) {
-                return await apiCall(`/weddings/${weddingId}/budget/${itemId}`, 'DELETE');
+            async deleteBudgetItem(itemId) {
+                return await apiCall(`/budget/${itemId}`, 'DELETE');
             },
             
             // Vendors Management
@@ -838,6 +838,25 @@
                 if (newWedding) {
                     weddingData.id = newWedding.id;
                     localStorage.setItem('currentWeddingId', newWedding.id);
+                    showSuccess('Planejamento salvo com sucesso!');
+                }
+            }
+        }
+
+        // Initialize wedding plan if needed
+        async function initializeWedding() {
+            if (!weddingData.id && !USE_LOCAL_STORAGE) {
+                const newWedding = await WeddingAPI.createWedding(weddingData);
+                if (newWedding) {
+                    weddingData.id = newWedding.id;
+                    localStorage.setItem('currentWeddingId', newWedding.id);
+                    
+                    // Load the complete data from backend
+                    const completeData = await WeddingAPI.getWedding(newWedding.id);
+                    if (completeData) {
+                        weddingData = { ...weddingData, ...completeData };
+                        showSuccess('Bem-vindos! Seu planejamento foi criado.');
+                    }
                 }
             }
         }
@@ -1026,7 +1045,7 @@
                 
                 // Update API if not using local storage
                 if (!USE_LOCAL_STORAGE && weddingData.id) {
-                    const success = await WeddingAPI.updateTask(weddingData.id, taskId, task);
+                    const success = await WeddingAPI.updateTask(taskId, { completed: task.completed });
                     if (!success) {
                         // Revert change if API call failed
                         task.completed = !task.completed;
@@ -1045,7 +1064,7 @@
         async function removeTask(listType, taskId) {
             // Remove from API first if not using local storage
             if (!USE_LOCAL_STORAGE && weddingData.id) {
-                const success = await WeddingAPI.deleteTask(weddingData.id, taskId);
+                const success = await WeddingAPI.deleteTask(taskId);
                 if (!success) {
                     showError('Erro ao remover tarefa do servidor');
                     return;
@@ -1245,8 +1264,10 @@
         });
 
         // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            loadData();
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadData();
+            await initializeWedding();
+            
             renderPreWeddingTasks();
             renderFinalPreparations();
             renderBudgetItems();
