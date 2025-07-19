@@ -94,8 +94,46 @@
             position: relative;
             background: conic-gradient(from 0deg, #ec4899, #f59e0b, #10b981, #3b82f6, #8b5cf6, #ec4899);
             border-radius: 50%;
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
+            max-width: 200px;
+            max-height: 200px;
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 640px) {
+            .container {
+                max-width: 100%;
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .floating-hearts .heart {
+                font-size: 12px !important;
+                opacity: 0.3;
+            }
+            
+            .card-hover:hover {
+                transform: none;
+            }
+            
+            .overflow-x-auto {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .text-2xl {
+                font-size: 1.25rem;
+            }
+            
+            .text-3xl {
+                font-size: 1.5rem;
+            }
+            
+            .text-4xl {
+                font-size: 1.75rem;
+            }
         }
         
         .section-divider {
@@ -119,89 +157,90 @@
         <i class="fas fa-heart heart" style="left: 90%; animation-delay: 8s; font-size: 19px;"></i>
     </div>
 
-   
+
+
     <!-- Navigation -->
-    <nav class="bg-rose-600 text-white sticky top-0 z-40">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-wrap justify-center space-x-4 py-3">
-                <button onclick="showSection('planning')" class="nav-btn px-4 py-2 rounded-lg hover:bg-rose-700 transition">
-                    <i class="fas fa-list-check mr-2"></i>Planejamento
+    <nav class="bg-rose-600 text-white sticky top--1 sm:top-20 z-40">
+        <div class="container mx-auto px-2 sm:px-4">
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 sm:gap-4 py-3">
+                <button onclick="showSection('planning')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
+                    <i class="fas fa-list-check mr-1 sm:mr-2"></i><span class="hidden xs:inline">Planejamento</span><span class="xs:hidden">Lista</span>
                 </button>
-                <button onclick="showSection('budget')" class="nav-btn px-4 py-2 rounded-lg hover:bg-rose-700 transition">
-                    <i class="fas fa-dollar-sign mr-2"></i>Orçamento
+                <button onclick="showSection('budget')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
+                    <i class="fas fa-dollar-sign mr-1 sm:mr-2"></i>Orçamento
                 </button>
-                <button onclick="showSection('tips')" class="nav-btn px-4 py-2 rounded-lg hover:bg-rose-700 transition">
-                    <i class="fas fa-lightbulb mr-2"></i>Dicas
+                <button onclick="showSection('tips')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
+                    <i class="fas fa-lightbulb mr-1 sm:mr-2"></i>Dicas
                 </button>
-                <button onclick="showSection('progress')" class="nav-btn px-4 py-2 rounded-lg hover:bg-rose-700 transition">
-                    <i class="fas fa-chart-line mr-2"></i>Progresso
+                <button onclick="showSection('progress')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
+                    <i class="fas fa-chart-line mr-1 sm:mr-2"></i>Progresso
                 </button>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <!-- Planning Section -->
         <section id="planning-section" class="section active">
-            <div class="text-center mb-8">
-                <h2 class="font-dancing text-4xl text-rose-700 font-bold mb-4">Lista de Planejamento</h2>
-                <p class="text-gray-600 text-lg">Organize cada detalhe do seu casamento perfeito</p>
+            <div class="text-center mb-6 sm:mb-8">
+                <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Lista de Planejamento</h2>
+                <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Organize cada detalhe do seu casamento perfeito</p>
                 <div class="section-divider"></div>
             </div>
 
             <!-- Pre-Wedding Planning -->
-            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 card-hover">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-2xl font-semibold text-rose-600 flex items-center">
-                        <i class="fas fa-calendar-check mr-3"></i>
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8 card-hover">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 flex items-center">
+                        <i class="fas fa-calendar-check mr-2 sm:mr-3 text-sm sm:text-base"></i>
                         Planejamento Inicial
                     </h3>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm text-gray-600">Progresso:</span>
-                        <div class="w-24 bg-gray-200 rounded-full h-2">
+                    <div class="flex items-center space-x-2 text-xs sm:text-sm">
+                        <span class="text-gray-600">Progresso:</span>
+                        <div class="w-16 sm:w-20 md:w-24 bg-gray-200 rounded-full h-2">
                             <div id="pre-progress" class="progress-bar bg-rose-500 h-2 rounded-full" style="width: 0%"></div>
                         </div>
-                        <span id="pre-percentage" class="text-sm text-gray-600">0%</span>
+                        <span id="pre-percentage" class="text-gray-600 min-w-8">0%</span>
                     </div>
                 </div>
                 
-                <div class="grid gap-3" id="pre-wedding-list">
+                <div class="grid gap-2 sm:gap-3" id="pre-wedding-list">
                     <!-- Pre-wedding tasks will be populated by JavaScript -->
                 </div>
                 
-                <div class="mt-4 flex gap-2">
-                    <input type="text" id="pre-new-task" placeholder="Adicionar nova tarefa..." class="flex-1 px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500">
-                    <button onclick="addTask('pre-wedding')" class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition">
-                        <i class="fas fa-plus"></i>
+                <div class="mt-4 flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="pre-new-task" placeholder="Adicionar nova tarefa..." class="flex-1 px-3 sm:px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm sm:text-base">
+                    <button onclick="addTask('pre-wedding')" class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition text-sm sm:text-base shrink-0">
+                        <i class="fas fa-plus mr-1 sm:mr-0"></i><span class="sm:hidden">Adicionar</span>
                     </button>
                 </div>
             </div>
 
             <!-- Final Preparations -->
-            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 card-hover">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-2xl font-semibold text-gold-600 flex items-center">
-                        <i class="fas fa-clock mr-3"></i>
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8 card-hover">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-gold-600 flex items-center">
+                        <i class="fas fa-clock mr-2 sm:mr-3 text-sm sm:text-base"></i>
                         Preparações Finais
                     </h3>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm text-gray-600">Progresso:</span>
-                        <div class="w-24 bg-gray-200 rounded-full h-2">
+                    <div class="flex items-center space-x-2 text-xs sm:text-sm">
+                        <span class="text-gray-600">Progresso:</span>
+                        <div class="w-16 sm:w-20 md:w-24 bg-gray-200 rounded-full h-2">
                             <div id="final-progress" class="progress-bar bg-gold-500 h-2 rounded-full" style="width: 0%"></div>
                         </div>
-                        <span id="final-percentage" class="text-sm text-gray-600">0%</span>
+                        <span id="final-percentage" class="text-gray-600 min-w-8">0%</span>
                     </div>
                 </div>
                 
-                <div class="grid gap-3" id="final-preparations-list">
+                <div class="grid gap-2 sm:gap-3" id="final-preparations-list">
                     <!-- Final preparation tasks will be populated by JavaScript -->
                 </div>
                 
-                <div class="mt-4 flex gap-2">
-                    <input type="text" id="final-new-task" placeholder="Adicionar nova tarefa..." class="flex-1 px-4 py-2 border border-gold-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500">
-                    <button onclick="addTask('final-preparations')" class="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition">
-                        <i class="fas fa-plus"></i>
+                <div class="mt-4 flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="final-new-task" placeholder="Adicionar nova tarefa..." class="flex-1 px-3 sm:px-4 py-2 border border-gold-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm sm:text-base">
+                    <button onclick="addTask('final-preparations')" class="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition text-sm sm:text-base shrink-0">
+                        <i class="fas fa-plus mr-1 sm:mr-0"></i><span class="sm:hidden">Adicionar</span>
                     </button>
                 </div>
             </div>
@@ -209,87 +248,87 @@
 
         <!-- Budget Section -->
         <section id="budget-section" class="section hidden">
-            <div class="text-center mb-8">
-                <h2 class="font-dancing text-4xl text-rose-700 font-bold mb-4">Planejamento de Orçamento</h2>
-                <p class="text-gray-600 text-lg">Gerencie suas finanças para o casamento dos sonhos</p>
+            <div class="text-center mb-6 sm:mb-8">
+                <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Planejamento de Orçamento</h2>
+                <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Gerencie suas finanças para o casamento dos sonhos</p>
                 <div class="section-divider"></div>
             </div>
 
             <!-- Budget Calculator -->
-            <div class="grid md:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <h3 class="text-2xl font-semibold text-rose-600 mb-4 flex items-center">
-                        <i class="fas fa-calculator mr-3"></i>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
+                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 mb-4 flex items-center">
+                        <i class="fas fa-calculator mr-2 sm:mr-3 text-sm sm:text-base"></i>
                         Calculadora de Orçamento
                     </h3>
                     
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-gray-700 font-medium mb-2">Orçamento Total (R$)</label>
-                            <input type="number" id="total-budget" placeholder="50000" class="w-full px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" oninput="calculateBudget()">
+                            <label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Orçamento Total (R$)</label>
+                            <input type="number" id="total-budget" placeholder="50000" class="w-full px-3 sm:px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm sm:text-base" oninput="calculateBudget()">
                         </div>
                         
-                        <div class="grid grid-cols-2 gap-4 text-center">
-                            <div class="bg-rose-50 p-4 rounded-lg">
-                                <div class="text-2xl font-bold text-rose-600" id="total-spent">R$ 0</div>
-                                <div class="text-sm text-gray-600">Total Gasto</div>
+                        <div class="grid grid-cols-2 gap-3 sm:gap-4 text-center">
+                            <div class="bg-rose-50 p-3 sm:p-4 rounded-lg">
+                                <div class="text-lg sm:text-xl md:text-2xl font-bold text-rose-600" id="total-spent">R$ 0</div>
+                                <div class="text-xs sm:text-sm text-gray-600">Total Gasto</div>
                             </div>
-                            <div class="bg-green-50 p-4 rounded-lg">
-                                <div class="text-2xl font-bold text-green-600" id="remaining-budget">R$ 0</div>
-                                <div class="text-sm text-gray-600">Restante</div>
+                            <div class="bg-green-50 p-3 sm:p-4 rounded-lg">
+                                <div class="text-lg sm:text-xl md:text-2xl font-bold text-green-600" id="remaining-budget">R$ 0</div>
+                                <div class="text-xs sm:text-sm text-gray-600">Restante</div>
                             </div>
                         </div>
                         
-                        <div class="w-full bg-gray-200 rounded-full h-4">
-                            <div id="budget-progress" class="progress-bar bg-gradient-to-r from-green-400 to-rose-500 h-4 rounded-full" style="width: 0%"></div>
+                        <div class="w-full bg-gray-200 rounded-full h-3 sm:h-4">
+                            <div id="budget-progress" class="progress-bar bg-gradient-to-r from-green-400 to-rose-500 h-3 sm:h-4 rounded-full" style="width: 0%"></div>
                         </div>
-                        <div class="text-center text-sm text-gray-600">
+                        <div class="text-center text-xs sm:text-sm text-gray-600">
                             <span id="budget-percentage">0%</span> do orçamento utilizado
                         </div>
                     </div>
                 </div>
 
                 <!-- Budget Breakdown Chart -->
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <h3 class="text-2xl font-semibold text-rose-600 mb-4 flex items-center">
-                        <i class="fas fa-chart-pie mr-3"></i>
+                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 mb-4 flex items-center">
+                        <i class="fas fa-chart-pie mr-2 sm:mr-3 text-sm sm:text-base"></i>
                         Distribuição do Orçamento
                     </h3>
                     
                     <div class="flex justify-center mb-4">
-                        <div class="budget-chart relative">
-                            <div class="absolute inset-4 bg-white rounded-full flex items-center justify-center">
+                        <div class="budget-chart relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
+                            <div class="absolute inset-3 sm:inset-4 bg-white rounded-full flex items-center justify-center">
                                 <div class="text-center">
-                                    <div class="text-lg font-bold text-gray-800" id="chart-total">R$ 0</div>
+                                    <div class="text-sm sm:text-base md:text-lg font-bold text-gray-800" id="chart-total">R$ 0</div>
                                     <div class="text-xs text-gray-600">Total</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
                         <div class="flex items-center">
-                            <div class="w-3 h-3 bg-rose-500 rounded mr-2"></div>
+                            <div class="w-3 h-3 bg-rose-500 rounded mr-2 shrink-0"></div>
                             <span>Local & Decoração</span>
                         </div>
                         <div class="flex items-center">
-                            <div class="w-3 h-3 bg-gold-500 rounded mr-2"></div>
+                            <div class="w-3 h-3 bg-gold-500 rounded mr-2 shrink-0"></div>
                             <span>Comida & Bebida</span>
                         </div>
                         <div class="flex items-center">
-                            <div class="w-3 h-3 bg-green-500 rounded mr-2"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded mr-2 shrink-0"></div>
                             <span>Fotografia</span>
                         </div>
                         <div class="flex items-center">
-                            <div class="w-3 h-3 bg-blue-500 rounded mr-2"></div>
+                            <div class="w-3 h-3 bg-blue-500 rounded mr-2 shrink-0"></div>
                             <span>Música & Som</span>
                         </div>
                         <div class="flex items-center">
-                            <div class="w-3 h-3 bg-purple-500 rounded mr-2"></div>
+                            <div class="w-3 h-3 bg-purple-500 rounded mr-2 shrink-0"></div>
                             <span>Vestimentas</span>
                         </div>
                         <div class="flex items-center">
-                            <div class="w-3 h-3 bg-indigo-500 rounded mr-2"></div>
+                            <div class="w-3 h-3 bg-indigo-500 rounded mr-2 shrink-0"></div>
                             <span>Outros</span>
                         </div>
                     </div>
@@ -297,18 +336,18 @@
             </div>
 
             <!-- Budget Categories -->
-            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 card-hover">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-semibold text-rose-600 flex items-center">
-                        <i class="fas fa-list-ul mr-3"></i>
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8 card-hover">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
+                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 flex items-center">
+                        <i class="fas fa-list-ul mr-2 sm:mr-3 text-sm sm:text-base"></i>
                         Categorias de Gastos
                     </h3>
-                    <button onclick="addBudgetItem()" class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition">
-                        <i class="fas fa-plus mr-2"></i>Adicionar Item
+                    <button onclick="addBudgetItem()" class="px-3 sm:px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition text-sm sm:text-base shrink-0">
+                        <i class="fas fa-plus mr-1 sm:mr-2"></i>Adicionar Item
                     </button>
                 </div>
                 
-                <div class="grid gap-4" id="budget-categories">
+                <div class="grid gap-3 sm:gap-4" id="budget-categories">
                     <!-- Budget categories will be populated by JavaScript -->
                 </div>
             </div>
@@ -316,72 +355,72 @@
 
         <!-- Tips Section -->
         <section id="tips-section" class="section hidden">
-            <div class="text-center mb-8">
-                <h2 class="font-dancing text-4xl text-rose-700 font-bold mb-4">Dicas de Economia</h2>
-                <p class="text-gray-600 text-lg">Dicas valiosas para economizar no seu casamento</p>
+            <div class="text-center mb-6 sm:mb-8">
+                <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Dicas de Economia</h2>
+                <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Dicas valiosas para economizar no seu casamento</p>
                 <div class="section-divider"></div>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-calendar-alt text-4xl text-rose-500 mb-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">Escolha a Data</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                    <div class="text-center mb-3 sm:mb-4">
+                        <i class="fas fa-calendar-alt text-2xl sm:text-3xl md:text-4xl text-rose-500 mb-2 sm:mb-3"></i>
+                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Escolha a Data</h3>
                     </div>
-                    <p class="text-gray-600">Casamentos em dias da semana ou fora da alta temporada podem ser até 40% mais baratos.</p>
+                    <p class="text-gray-600 text-sm sm:text-base">Casamentos em dias da semana ou fora da alta temporada podem ser até 40% mais baratos.</p>
                 </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-users text-4xl text-gold-500 mb-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">Lista de Convidados</h3>
+                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                    <div class="text-center mb-3 sm:mb-4">
+                        <i class="fas fa-users text-2xl sm:text-3xl md:text-4xl text-gold-500 mb-2 sm:mb-3"></i>
+                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Lista de Convidados</h3>
                     </div>
-                    <p class="text-gray-600">Reduzir o número de convidados é a forma mais eficaz de economizar, afetando comida, bebida e local.</p>
+                    <p class="text-gray-600 text-sm sm:text-base">Reduzir o número de convidados é a forma mais eficaz de economizar, afetando comida, bebida e local.</p>
                 </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-utensils text-4xl text-green-500 mb-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">Buffet Simplificado</h3>
+                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                    <div class="text-center mb-3 sm:mb-4">
+                        <i class="fas fa-utensils text-2xl sm:text-3xl md:text-4xl text-green-500 mb-2 sm:mb-3"></i>
+                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Buffet Simplificado</h3>
                     </div>
-                    <p class="text-gray-600">Opte por um cardápio mais simples ou buffet self-service ao invés de jantar servido.</p>
+                    <p class="text-gray-600 text-sm sm:text-base">Opte por um cardápio mais simples ou buffet self-service ao invés de jantar servido.</p>
                 </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-seedling text-4xl text-blue-500 mb-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">Decoração DIY</h3>
+                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                    <div class="text-center mb-3 sm:mb-4">
+                        <i class="fas fa-seedling text-2xl sm:text-3xl md:text-4xl text-blue-500 mb-2 sm:mb-3"></i>
+                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Decoração DIY</h3>
                     </div>
-                    <p class="text-gray-600">Faça você mesmo centros de mesa, convites e lembrancinhas para economizar significativamente.</p>
+                    <p class="text-gray-600 text-sm sm:text-base">Faça você mesmo centros de mesa, convites e lembrancinhas para economizar significativamente.</p>
                 </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-camera text-4xl text-purple-500 mb-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">Fotografia Inteligente</h3>
+                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                    <div class="text-center mb-3 sm:mb-4">
+                        <i class="fas fa-camera text-2xl sm:text-3xl md:text-4xl text-purple-500 mb-2 sm:mb-3"></i>
+                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Fotografia Inteligente</h3>
                     </div>
-                    <p class="text-gray-600">Contrate o fotógrafo apenas para cerimônia e parte da festa, ou considere estudantes de fotografia.</p>
+                    <p class="text-gray-600 text-sm sm:text-base">Contrate o fotógrafo apenas para cerimônia e parte da festa, ou considere estudantes de fotografia.</p>
                 </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <div class="text-center mb-4">
-                        <i class="fas fa-music text-4xl text-indigo-500 mb-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-800">Música Econômica</h3>
+                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                    <div class="text-center mb-3 sm:mb-4">
+                        <i class="fas fa-music text-2xl sm:text-3xl md:text-4xl text-indigo-500 mb-2 sm:mb-3"></i>
+                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Música Econômica</h3>
                     </div>
-                    <p class="text-gray-600">Use playlists do Spotify com caixas de som de qualidade ao invés de contratar DJ ou banda.</p>
+                    <p class="text-gray-600 text-sm sm:text-base">Use playlists do Spotify com caixas de som de qualidade ao invés de contratar DJ ou banda.</p>
                 </div>
             </div>
         </section>
 
         <!-- Progress Section -->
         <section id="progress-section" class="section hidden">
-            <div class="text-center mb-8">
-                <h2 class="font-dancing text-4xl text-rose-700 font-bold mb-4">Nosso Progresso</h2>
-                <p class="text-gray-600 text-lg">Acompanhe o andamento do planejamento do seu casamento</p>
+            <div class="text-center mb-6 sm:mb-8">
+                <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Nosso Progresso</h2>
+                <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Acompanhe o andamento do planejamento do seu casamento</p>
                 <div class="section-divider"></div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
                 <!-- Overall Progress -->
                 <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
                     <h3 class="text-2xl font-semibold text-rose-600 mb-6 flex items-center">
@@ -475,15 +514,15 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-rose-600 text-white py-8 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <div class="mb-4">
-                <i class="fas fa-heart text-2xl text-rose-300 mb-2"></i>
-                <h3 class="font-dancing text-3xl font-bold">Planejamento de Casamento</h3>
+    <footer class="bg-rose-600 text-white py-6 sm:py-8 mt-8 sm:mt-12">
+        <div class="container mx-auto px-2 sm:px-4 text-center">
+            <div class="mb-3 sm:mb-4">
+                <i class="fas fa-heart text-lg sm:text-xl md:text-2xl text-rose-300 mb-2"></i>
+                <h3 class="font-dancing text-xl sm:text-2xl md:text-3xl font-bold">Planejamento de Casamento</h3>
             </div>
-            <p class="text-rose-200">Tornando seu dia especial ainda mais perfeito</p>
-            <div class="mt-4 text-rose-300">
-                <p>&copy; 2025 - Feito com amor para casais apaixonados</p>
+            <p class="text-rose-200 text-sm sm:text-base px-2">Tornando seu dia especial ainda mais perfeito</p>
+            <div class="mt-3 sm:mt-4 text-rose-300">
+                <p class="text-xs sm:text-sm">&copy; 2025 - Gabriel & Leliane</p>
             </div>
         </div>
     </footer>
@@ -834,17 +873,17 @@
             
             weddingData.preWeddingTasks.forEach(task => {
                 const taskElement = document.createElement('div');
-                taskElement.className = 'flex items-center justify-between p-3 bg-rose-50 rounded-lg border border-rose-200';
+                taskElement.className = 'flex items-start sm:items-center justify-between p-2 sm:p-3 bg-rose-50 rounded-lg border border-rose-200 gap-2';
                 taskElement.innerHTML = `
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-start sm:items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
                         <input type="checkbox" ${task.completed ? 'checked' : ''} 
                                onchange="toggleTask('preWeddingTasks', ${task.id})"
-                               class="w-5 h-5 text-rose-600 rounded focus:ring-rose-500">
-                        <span class="${task.completed ? 'line-through text-gray-500' : 'text-gray-800'}">${task.text}</span>
+                               class="w-4 h-4 sm:w-5 sm:h-5 text-rose-600 rounded focus:ring-rose-500 mt-0.5 sm:mt-0 shrink-0">
+                        <span class="${task.completed ? 'line-through text-gray-500' : 'text-gray-800'} text-sm sm:text-base break-words">${task.text}</span>
                     </div>
                     <button onclick="removeTask('preWeddingTasks', ${task.id})" 
-                            class="text-red-500 hover:text-red-700 transition">
-                        <i class="fas fa-trash"></i>
+                            class="text-red-500 hover:text-red-700 transition p-1 shrink-0">
+                        <i class="fas fa-trash text-xs sm:text-sm"></i>
                     </button>
                 `;
                 container.appendChild(taskElement);
@@ -860,17 +899,17 @@
             
             weddingData.finalPreparations.forEach(task => {
                 const taskElement = document.createElement('div');
-                taskElement.className = 'flex items-center justify-between p-3 bg-gold-50 rounded-lg border border-gold-200';
+                taskElement.className = 'flex items-start sm:items-center justify-between p-2 sm:p-3 bg-gold-50 rounded-lg border border-gold-200 gap-2';
                 taskElement.innerHTML = `
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-start sm:items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
                         <input type="checkbox" ${task.completed ? 'checked' : ''} 
                                onchange="toggleTask('finalPreparations', ${task.id})"
-                               class="w-5 h-5 text-gold-600 rounded focus:ring-gold-500">
-                        <span class="${task.completed ? 'line-through text-gray-500' : 'text-gray-800'}">${task.text}</span>
+                               class="w-4 h-4 sm:w-5 sm:h-5 text-gold-600 rounded focus:ring-gold-500 mt-0.5 sm:mt-0 shrink-0">
+                        <span class="${task.completed ? 'line-through text-gray-500' : 'text-gray-800'} text-sm sm:text-base break-words">${task.text}</span>
                     </div>
                     <button onclick="removeTask('finalPreparations', ${task.id})" 
-                            class="text-red-500 hover:text-red-700 transition">
-                        <i class="fas fa-trash"></i>
+                            class="text-red-500 hover:text-red-700 transition p-1 shrink-0">
+                        <i class="fas fa-trash text-xs sm:text-sm"></i>
                     </button>
                 `;
                 container.appendChild(taskElement);
