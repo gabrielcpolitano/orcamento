@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orçamento</title>
+    <title>Orçamento do Casamento - Gabriel & Leliane</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -397,7 +397,10 @@
                 return;
             }
 
-            appState.budgetItems.forEach(item => {
+            // Ordenar por porcentagem (maior para menor)
+            const sortedItems = [...appState.budgetItems].sort((a, b) => b.percentage - a.percentage);
+
+            sortedItems.forEach(item => {
                 const budgetAmount = (appState.totalBudget * item.percentage / 100);
                 const progressPercentage = budgetAmount > 0 ? Math.min((item.amount / budgetAmount) * 100, 100) : 0;
                 const isOverBudget = item.amount > budgetAmount;
@@ -456,7 +459,10 @@
                 return;
             }
 
-            appState.budgetItems.forEach(item => {
+            // Ordenar por porcentagem (maior para menor)
+            const sortedItems = [...appState.budgetItems].sort((a, b) => b.percentage - a.percentage);
+
+            sortedItems.forEach(item => {
                 const budgetAmount = (appState.totalBudget * item.percentage / 100);
                 const progressPercentage = budgetAmount > 0 ? Math.min((item.amount / budgetAmount) * 100, 100) : 0;
 
@@ -619,10 +625,13 @@
         function updateCharts() {
             if (!budgetDistributionChart || !spendingProgressChart) return;
 
+            // Ordenar por porcentagem (maior para menor)
+            const sortedItems = [...appState.budgetItems].sort((a, b) => b.percentage - a.percentage);
+
             // Dados para o gráfico de distribuição
-            const labels = appState.budgetItems.map(item => item.category);
-            const budgetAmounts = appState.budgetItems.map(item => appState.totalBudget * item.percentage / 100);
-            const spentAmounts = appState.budgetItems.map(item => parseFloat(item.amount) || 0);
+            const labels = sortedItems.map(item => item.category);
+            const budgetAmounts = sortedItems.map(item => appState.totalBudget * item.percentage / 100);
+            const spentAmounts = sortedItems.map(item => parseFloat(item.amount) || 0);
 
             // Atualizar gráfico de distribuição do orçamento
             budgetDistributionChart.data.labels = labels;

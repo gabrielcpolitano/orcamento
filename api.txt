@@ -1,0 +1,1 @@
+const API_BASE = "https://api-orcamento-7uwr.onrender.com";
