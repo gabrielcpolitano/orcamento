@@ -242,9 +242,12 @@
 
         <!-- Status de Sincronização -->
         <div class="text-center">
-            <div id="sync-status" class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg text-sm">
+            <button id="sync-button" onclick="syncData()" class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-colors duration-200 shadow-md hover:shadow-lg">
                 <i class="fas fa-sync-alt mr-2"></i>
-                <span>Carregando...</span>
+                <span>Sincronizar Dados</span>
+            </button>
+            <div id="sync-status" class="mt-2 text-sm text-gray-600">
+                Clique no botão para sincronizar os dados
             </div>
         </div>
     </main>
@@ -315,7 +318,43 @@
             await checkBackendConnection();
             await loadData();
             initializeCharts();
-            updateSyncStatus('Aplicação carregada!', false);
+            updateSyncStatus('Aplicação inicializada', false);
+        }
+
+        // Sincronizar dados manualmente
+        async function syncData() {
+            const button = document.getElementById('sync-button');
+            const icon = button.querySelector('i');
+            const text = button.querySelector('span');
+            
+            // Atualizar estado do botão
+            button.disabled = true;
+            button.classList.add('cursor-not-allowed', 'opacity-75');
+            icon.classList.add('animate-spin');
+            text.textContent = 'Sincronizando...';
+            
+            updateSyncStatus('Sincronizando dados...', true);
+            
+            try {
+                await checkBackendConnection();
+                await loadData();
+                updateCharts();
+                updateSyncStatus('Dados sincronizados com sucesso!', false);
+                showNotification('Dados sincronizados com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro na sincronização:', error);
+                updateSyncStatus('Erro na sincronização', false);
+                showNotification('Erro ao sincronizar dados', 'error');
+            } finally {
+                // Restaurar estado do botão
+                setTimeout(() => {
+                    button.disabled = false;
+                    button.classList.remove('cursor-not-allowed', 'opacity-75');
+                    icon.classList.remove('animate-spin');
+                    text.textContent = 'Sincronizar Dados';
+                    updateSyncStatus('Clique no botão para sincronizar os dados', false);
+                }, 1000);
+            }
         }
 
         // Verificar conexão com backend
@@ -814,11 +853,11 @@
             const syncEl = document.getElementById('sync-status');
 
             if (isLoading) {
-                syncEl.className = 'inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg text-sm';
+                syncEl.className = 'mt-2 text-sm text-blue-600 flex items-center justify-center';
                 syncEl.innerHTML = `<div class="loading mr-2"></div><span>${message}</span>`;
             } else {
-                syncEl.className = 'inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-lg text-sm';
-                syncEl.innerHTML = `<i class="fas fa-check mr-2"></i><span>${message}</span>`;
+                syncEl.className = 'mt-2 text-sm text-gray-600';
+                syncEl.innerHTML = `<span>${message}</span>`;
             }
         }
 
