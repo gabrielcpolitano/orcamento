@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planejamento de Casamento - Sua Jornada Perfeita</title>
+    <title>Orçamento do Casamento - Gabriel & Leliane</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -67,450 +67,111 @@
         .progress-bar {
             transition: width 0.5s ease-in-out;
         }
-        
-        .floating-hearts {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .heart {
-            position: absolute;
-            color: rgba(236, 72, 153, 0.1);
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            50% { opacity: 1; }
-            0% { transform: translateY(-100px) rotate(360deg); }
-        }
-        
-        .budget-chart {
-            position: relative;
-            background: conic-gradient(from 0deg, #ec4899, #f59e0b, #10b981, #3b82f6, #8b5cf6, #ec4899);
-            border-radius: 50%;
-            width: 100%;
-            height: 100%;
-            max-width: 200px;
-            max-height: 200px;
-        }
-        
-        /* Mobile-specific styles */
-        @media (max-width: 640px) {
-            .container {
-                max-width: 100%;
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-            }
-            
-            .floating-hearts .heart {
-                font-size: 12px !important;
-                opacity: 0.3;
-            }
-            
-            .card-hover:hover {
-                transform: none;
-            }
-            
-            .overflow-x-auto {
-                -webkit-overflow-scrolling: touch;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .text-2xl {
-                font-size: 1.25rem;
-            }
-            
-            .text-3xl {
-                font-size: 1.5rem;
-            }
-            
-            .text-4xl {
-                font-size: 1.75rem;
-            }
-        }
-        
-        .section-divider {
-            background: linear-gradient(90deg, transparent, #ec4899, transparent);
-            height: 2px;
-            margin: 2rem 0;
-        }
     </style>
 </head>
 <body class="font-poppins gradient-bg min-h-screen">
-    <!-- Floating Hearts Background -->
-    <div class="floating-hearts">
-        <i class="fas fa-heart heart" style="left: 10%; animation-delay: 0s; font-size: 20px;"></i>
-        <i class="fas fa-heart heart" style="left: 20%; animation-delay: 1s; font-size: 15px;"></i>
-        <i class="fas fa-heart heart" style="left: 30%; animation-delay: 2s; font-size: 25px;"></i>
-        <i class="fas fa-heart heart" style="left: 40%; animation-delay: 3s; font-size: 18px;"></i>
-        <i class="fas fa-heart heart" style="left: 50%; animation-delay: 4s; font-size: 22px;"></i>
-        <i class="fas fa-heart heart" style="left: 60%; animation-delay: 5s; font-size: 16px;"></i>
-        <i class="fas fa-heart heart" style="left: 70%; animation-delay: 6s; font-size: 20px;"></i>
-        <i class="fas fa-heart heart" style="left: 80%; animation-delay: 7s; font-size: 24px;"></i>
-        <i class="fas fa-heart heart" style="left: 90%; animation-delay: 8s; font-size: 19px;"></i>
-    </div>
-
-
-
-    <!-- Navigation -->
-    <nav class="bg-rose-600 text-white sticky top--1 sm:top--1 z-40">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-rose-400 via-rose-500 to-gold-400 text-white py-4 sm:py-6 shadow-lg">
         <div class="container mx-auto px-2 sm:px-4">
-            <div class="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-2 sm:gap-4 py-3">
-                <button onclick="showSection('planning')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
-                    <i class="fas fa-list-check mr-1 sm:mr-2"></i><span class="hidden xs:inline">Planejamento</span><span class="xs:hidden">Lista</span>
-                </button>
-                <button onclick="showSection('budget')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
-                    <i class="fas fa-dollar-sign mr-1 sm:mr-2"></i>Orçamento
-                </button>
-                <button onclick="showSection('tips')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
-                    <i class="fas fa-lightbulb mr-1 sm:mr-2"></i>Dicas
-                </button>
-                <button onclick="showSection('progress')" class="nav-btn px-3 sm:px-4 py-2 rounded-lg hover:bg-rose-700 transition text-xs sm:text-sm md:text-base">
-                    <i class="fas fa-chart-line mr-1 sm:mr-2"></i>Progresso
-                </button>
+            <div class="text-center">
+                <h1 class="font-dancing text-2xl sm:text-3xl md:text-4xl font-bold">Orçamento do Casamento</h1>
+                <p class="text-rose-100 text-xs sm:text-sm md:text-base">Gabriel & Leliane - Gerencie seus gastos de forma inteligente</p>
             </div>
         </div>
-    </nav>
+    </header>
 
     <!-- Main Content -->
     <main class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-        <!-- Planning Section -->
-        <section id="planning-section" class="section active">
-            <div class="text-center mb-6 sm:mb-8">
-                <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Lista de Planejamento</h2>
-                <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Organize cada detalhe do seu casamento perfeito</p>
-                <div class="section-divider"></div>
-            </div>
+        <div class="text-center mb-6 sm:mb-8">
+            <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Planejamento de Orçamento</h2>
+            <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Gerencie suas finanças para o casamento dos sonhos</p>
+        </div>
 
-            <!-- Pre-Wedding Planning -->
-            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8 card-hover">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 flex items-center">
-                        <i class="fas fa-calendar-check mr-2 sm:mr-3 text-sm sm:text-base"></i>
-                        Planejamento Inicial
-                    </h3>
-                    <div class="flex items-center space-x-2 text-xs sm:text-sm">
-                        <span class="text-gray-600">Progresso:</span>
-                        <div class="w-16 sm:w-20 md:w-24 bg-gray-200 rounded-full h-2">
-                            <div id="pre-progress" class="progress-bar bg-rose-500 h-2 rounded-full" style="width: 0%"></div>
-                        </div>
-                        <span id="pre-percentage" class="text-gray-600 min-w-8">0%</span>
-                    </div>
-                </div>
+        <!-- Budget Calculator -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 mb-4 flex items-center">
+                    <i class="fas fa-calculator mr-2 sm:mr-3 text-sm sm:text-base"></i>
+                    Calculadora de Orçamento
+                </h3>
                 
-                <div class="grid gap-2 sm:gap-3" id="pre-wedding-list">
-                    <!-- Pre-wedding tasks will be populated by JavaScript -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Orçamento Total (R$)</label>
+                        <input type="number" id="total-budget" placeholder="50000" class="w-full px-3 sm:px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm sm:text-base" oninput="calculateBudget()">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 sm:gap-4 text-center">
+                        <div class="bg-rose-50 p-3 sm:p-4 rounded-lg">
+                            <div class="text-lg sm:text-xl md:text-2xl font-bold text-rose-600" id="total-spent">R$ 0</div>
+                            <div class="text-xs sm:text-sm text-gray-600">Total Gasto</div>
+                        </div>
+                        <div class="bg-green-50 p-3 sm:p-4 rounded-lg">
+                            <div class="text-lg sm:text-xl md:text-2xl font-bold text-green-600" id="remaining-budget">R$ 0</div>
+                            <div class="text-xs sm:text-sm text-gray-600">Restante</div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full bg-gray-200 rounded-full h-3 sm:h-4">
+                        <div id="budget-progress" class="progress-bar bg-gradient-to-r from-green-400 to-rose-500 h-3 sm:h-4 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <div class="text-center text-xs sm:text-sm text-gray-600">
+                        <span id="budget-percentage">0%</span> do orçamento utilizado
+                    </div>
                 </div>
+            </div>
+            
+            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
+                <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-gold-600 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie mr-2 sm:mr-3 text-sm sm:text-base"></i>
+                    Distribuição por Categoria
+                </h3>
                 
-                <div class="mt-4 flex flex-col sm:flex-row gap-2">
-                    <input type="text" id="pre-new-task" placeholder="Adicionar nova tarefa..." class="flex-1 px-3 sm:px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm sm:text-base">
-                    <button onclick="addTask('pre-wedding')" class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition text-sm sm:text-base shrink-0">
-                        <i class="fas fa-plus mr-1 sm:mr-0"></i><span class="sm:hidden">Adicionar</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Final Preparations -->
-            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8 card-hover">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-gold-600 flex items-center">
-                        <i class="fas fa-clock mr-2 sm:mr-3 text-sm sm:text-base"></i>
-                        Preparações Finais
-                    </h3>
-                    <div class="flex items-center space-x-2 text-xs sm:text-sm">
-                        <span class="text-gray-600">Progresso:</span>
-                        <div class="w-16 sm:w-20 md:w-24 bg-gray-200 rounded-full h-2">
-                            <div id="final-progress" class="progress-bar bg-gold-500 h-2 rounded-full" style="width: 0%"></div>
-                        </div>
-                        <span id="final-percentage" class="text-gray-600 min-w-8">0%</span>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center text-xs sm:text-sm">
+                        <span class="text-gray-700">Local & Decoração</span>
+                        <span class="font-semibold text-rose-600">35%</span>
                     </div>
-                </div>
-                
-                <div class="grid gap-2 sm:gap-3" id="final-preparations-list">
-                    <!-- Final preparation tasks will be populated by JavaScript -->
-                </div>
-                
-                <div class="mt-4 flex flex-col sm:flex-row gap-2">
-                    <input type="text" id="final-new-task" placeholder="Adicionar nova tarefa..." class="flex-1 px-3 sm:px-4 py-2 border border-gold-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 text-sm sm:text-base">
-                    <button onclick="addTask('final-preparations')" class="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition text-sm sm:text-base shrink-0">
-                        <i class="fas fa-plus mr-1 sm:mr-0"></i><span class="sm:hidden">Adicionar</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Budget Section -->
-        <section id="budget-section" class="section hidden">
-            <div class="text-center mb-6 sm:mb-8">
-                <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Planejamento de Orçamento</h2>
-                <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Gerencie suas finanças para o casamento dos sonhos</p>
-                <div class="section-divider"></div>
-            </div>
-
-            <!-- Budget Calculator -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
-                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 mb-4 flex items-center">
-                        <i class="fas fa-calculator mr-2 sm:mr-3 text-sm sm:text-base"></i>
-                        Calculadora de Orçamento
-                    </h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Orçamento Total (R$)</label>
-                            <input type="number" id="total-budget" placeholder="50000" class="w-full px-3 sm:px-4 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm sm:text-base" oninput="calculateBudget()">
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-3 sm:gap-4 text-center">
-                            <div class="bg-rose-50 p-3 sm:p-4 rounded-lg">
-                                <div class="text-lg sm:text-xl md:text-2xl font-bold text-rose-600" id="total-spent">R$ 0</div>
-                                <div class="text-xs sm:text-sm text-gray-600">Total Gasto</div>
-                            </div>
-                            <div class="bg-green-50 p-3 sm:p-4 rounded-lg">
-                                <div class="text-lg sm:text-xl md:text-2xl font-bold text-green-600" id="remaining-budget">R$ 0</div>
-                                <div class="text-xs sm:text-sm text-gray-600">Restante</div>
-                            </div>
-                        </div>
-                        
-                        <div class="w-full bg-gray-200 rounded-full h-3 sm:h-4">
-                            <div id="budget-progress" class="progress-bar bg-gradient-to-r from-green-400 to-rose-500 h-3 sm:h-4 rounded-full" style="width: 0%"></div>
-                        </div>
-                        <div class="text-center text-xs sm:text-sm text-gray-600">
-                            <span id="budget-percentage">0%</span> do orçamento utilizado
-                        </div>
+                    <div class="flex justify-between items-center text-xs sm:text-sm">
+                        <span class="text-gray-700">Comida & Bebida</span>
+                        <span class="font-semibold text-gold-600">30%</span>
                     </div>
-                </div>
-
-                <!-- Budget Breakdown Chart -->
-                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 mb-4 flex items-center">
-                        <i class="fas fa-chart-pie mr-2 sm:mr-3 text-sm sm:text-base"></i>
-                        Distribuição do Orçamento
-                    </h3>
-                    
-                    <div class="flex justify-center mb-4">
-                        <div class="budget-chart relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
-                            <div class="absolute inset-3 sm:inset-4 bg-white rounded-full flex items-center justify-center">
-                                <div class="text-center">
-                                    <div class="text-sm sm:text-base md:text-lg font-bold text-gray-800" id="chart-total">R$ 0</div>
-                                    <div class="text-xs text-gray-600">Total</div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex justify-between items-center text-xs sm:text-sm">
+                        <span class="text-gray-700">Fotografia & Vídeo</span>
+                        <span class="font-semibold text-green-600">15%</span>
                     </div>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-rose-500 rounded mr-2 shrink-0"></div>
-                            <span>Local & Decoração</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-gold-500 rounded mr-2 shrink-0"></div>
-                            <span>Comida & Bebida</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-green-500 rounded mr-2 shrink-0"></div>
-                            <span>Fotografia</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-blue-500 rounded mr-2 shrink-0"></div>
-                            <span>Música & Som</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-purple-500 rounded mr-2 shrink-0"></div>
-                            <span>Vestimentas</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-indigo-500 rounded mr-2 shrink-0"></div>
-                            <span>Outros</span>
-                        </div>
+                    <div class="flex justify-between items-center text-xs sm:text-sm">
+                        <span class="text-gray-700">Música & Entretenimento</span>
+                        <span class="font-semibold text-blue-600">8%</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs sm:text-sm">
+                        <span class="text-gray-700">Vestimentas & Beleza</span>
+                        <span class="font-semibold text-purple-600">7%</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs sm:text-sm">
+                        <span class="text-gray-700">Outros & Imprevistos</span>
+                        <span class="font-semibold text-gray-600">5%</span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Budget Categories -->
-            <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8 card-hover">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 flex items-center">
-                        <i class="fas fa-list-ul mr-2 sm:mr-3 text-sm sm:text-base"></i>
-                        Categorias de Gastos
-                    </h3>
-                    <button onclick="addBudgetItem()" class="px-3 sm:px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition text-sm sm:text-base shrink-0">
-                        <i class="fas fa-plus mr-1 sm:mr-2"></i>Adicionar Item
-                    </button>
-                </div>
-                
-                <div class="grid gap-3 sm:gap-4" id="budget-categories">
-                    <!-- Budget categories will be populated by JavaScript -->
-                </div>
+        <!-- Budget Categories -->
+        <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 mb-6 sm:mb-8 card-hover">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
+                <h3 class="text-lg sm:text-xl md:text-2xl font-semibold text-rose-600 flex items-center">
+                    <i class="fas fa-list-ul mr-2 sm:mr-3 text-sm sm:text-base"></i>
+                    Categorias de Gastos
+                </h3>
+                <button onclick="addBudgetItem()" class="px-3 sm:px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition text-sm sm:text-base shrink-0">
+                    <i class="fas fa-plus mr-1 sm:mr-2"></i>Adicionar Item
+                </button>
             </div>
-        </section>
-
-        <!-- Tips Section -->
-        <section id="tips-section" class="section hidden">
-            <div class="text-center mb-6 sm:mb-8">
-                <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Dicas de Economia</h2>
-                <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Dicas valiosas para economizar no seu casamento</p>
-                <div class="section-divider"></div>
+            
+            <div class="grid gap-3 sm:gap-4" id="budget-categories">
+                <!-- Budget categories will be populated by JavaScript -->
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
-                    <div class="text-center mb-3 sm:mb-4">
-                        <i class="fas fa-calendar-alt text-2xl sm:text-3xl md:text-4xl text-rose-500 mb-2 sm:mb-3"></i>
-                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Escolha a Data</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm sm:text-base">Casamentos em dias da semana ou fora da alta temporada podem ser até 40% mais baratos.</p>
-                </div>
-
-                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
-                    <div class="text-center mb-3 sm:mb-4">
-                        <i class="fas fa-users text-2xl sm:text-3xl md:text-4xl text-gold-500 mb-2 sm:mb-3"></i>
-                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Lista de Convidados</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm sm:text-base">Reduzir o número de convidados é a forma mais eficaz de economizar, afetando comida, bebida e local.</p>
-                </div>
-
-                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
-                    <div class="text-center mb-3 sm:mb-4">
-                        <i class="fas fa-utensils text-2xl sm:text-3xl md:text-4xl text-green-500 mb-2 sm:mb-3"></i>
-                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Buffet Simplificado</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm sm:text-base">Opte por um cardápio mais simples ou buffet self-service ao invés de jantar servido.</p>
-                </div>
-
-                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
-                    <div class="text-center mb-3 sm:mb-4">
-                        <i class="fas fa-seedling text-2xl sm:text-3xl md:text-4xl text-blue-500 mb-2 sm:mb-3"></i>
-                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Decoração DIY</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm sm:text-base">Faça você mesmo centros de mesa, convites e lembrancinhas para economizar significativamente.</p>
-                </div>
-
-                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
-                    <div class="text-center mb-3 sm:mb-4">
-                        <i class="fas fa-camera text-2xl sm:text-3xl md:text-4xl text-purple-500 mb-2 sm:mb-3"></i>
-                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Fotografia Inteligente</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm sm:text-base">Contrate o fotógrafo apenas para cerimônia e parte da festa, ou considere estudantes de fotografia.</p>
-                </div>
-
-                <div class="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover">
-                    <div class="text-center mb-3 sm:mb-4">
-                        <i class="fas fa-music text-2xl sm:text-3xl md:text-4xl text-indigo-500 mb-2 sm:mb-3"></i>
-                        <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-800">Música Econômica</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm sm:text-base">Use playlists do Spotify com caixas de som de qualidade ao invés de contratar DJ ou banda.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Progress Section -->
-        <section id="progress-section" class="section hidden">
-            <div class="text-center mb-6 sm:mb-8">
-                <h2 class="font-dancing text-2xl sm:text-3xl md:text-4xl text-rose-700 font-bold mb-2 sm:mb-4">Nosso Progresso</h2>
-                <p class="text-gray-600 text-sm sm:text-base md:text-lg px-2">Acompanhe o andamento do planejamento do seu casamento</p>
-                <div class="section-divider"></div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-                <!-- Overall Progress -->
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <h3 class="text-2xl font-semibold text-rose-600 mb-6 flex items-center">
-                        <i class="fas fa-trophy mr-3"></i>
-                        Progresso Geral
-                    </h3>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-gray-700">Planejamento Inicial</span>
-                                <span id="overall-pre-percentage" class="text-gray-600">0%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div id="overall-pre-progress" class="progress-bar bg-rose-500 h-3 rounded-full" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-gray-700">Preparações Finais</span>
-                                <span id="overall-final-percentage" class="text-gray-600">0%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div id="overall-final-progress" class="progress-bar bg-gold-500 h-3 rounded-full" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-gray-700">Orçamento</span>
-                                <span id="overall-budget-percentage" class="text-gray-600">0%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div id="overall-budget-progress" class="progress-bar bg-green-500 h-3 rounded-full" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="border-t pt-4">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-lg font-semibold text-gray-800">Progresso Total</span>
-                                <span id="total-progress-percentage" class="text-lg font-semibold text-rose-600">0%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-4">
-                                <div id="total-progress-bar" class="progress-bar bg-gradient-to-r from-rose-500 to-gold-500 h-4 rounded-full" style="width: 0%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Statistics -->
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover">
-                    <h3 class="text-2xl font-semibold text-rose-600 mb-6 flex items-center">
-                        <i class="fas fa-chart-bar mr-3"></i>
-                        Estatísticas
-                    </h3>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="text-center bg-rose-50 p-4 rounded-lg">
-                            <div class="text-3xl font-bold text-rose-600" id="tasks-completed">0</div>
-                            <div class="text-sm text-gray-600">Tarefas Concluídas</div>
-                        </div>
-                        
-                        <div class="text-center bg-gold-50 p-4 rounded-lg">
-                            <div class="text-3xl font-bold text-gold-600" id="tasks-remaining">0</div>
-                            <div class="text-sm text-gray-600">Tarefas Restantes</div>
-                        </div>
-                        
-                        <div class="text-center bg-green-50 p-4 rounded-lg">
-                            <div class="text-3xl font-bold text-green-600" id="budget-items-planned">0</div>
-                            <div class="text-sm text-gray-600">Itens no Orçamento</div>
-                        </div>
-                        
-                        <div class="text-center bg-blue-50 p-4 rounded-lg">
-                            <div class="text-3xl font-bold text-blue-600" id="days-until-wedding">∞</div>
-                            <div class="text-sm text-gray-600">Dias até o Casamento</div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 p-4 bg-gradient-to-r from-rose-100 to-gold-100 rounded-lg">
-                        <div class="text-center">
-                            <h4 class="font-semibold text-gray-800 mb-2">Dica do Dia</h4>
-                            <p class="text-sm text-gray-600" id="daily-tip">
-                                Comece o planejamento com pelo menos 12 meses de antecedência para ter tempo de pesquisar e negociar os melhores preços.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -518,11 +179,11 @@
         <div class="container mx-auto px-2 sm:px-4 text-center">
             <div class="mb-3 sm:mb-4">
                 <i class="fas fa-heart text-lg sm:text-xl md:text-2xl text-rose-300 mb-2"></i>
-                <h3 class="font-dancing text-xl sm:text-2xl md:text-3xl font-bold">Planejamento de Casamento</h3>
+                <h3 class="font-dancing text-xl sm:text-2xl md:text-3xl font-bold">Gabriel & Leliane</h3>
             </div>
-            <p class="text-rose-200 text-sm sm:text-base px-2">Tornando seu dia especial ainda mais perfeito</p>
+            <p class="text-rose-200 text-sm sm:text-base px-2">Planejando nosso casamento dos sonhos</p>
             <div class="mt-3 sm:mt-4 text-rose-300">
-                <p class="text-xs sm:text-sm">&copy; 2025 - Gabriel & Leliane</p>
+                <p class="text-xs sm:text-sm">&copy; 2025 - Feito com amor</p>
             </div>
         </div>
     </footer>
@@ -530,58 +191,26 @@
     <script>
         // API Configuration
         const API_BASE_URL = window.location.origin + '/api';
-        const USE_LOCAL_STORAGE = false; // Backend is now ready
+        const USE_LOCAL_STORAGE = false; // Backend is ready
         
-        // Initial data structure for backend compatibility
+        // Simplified data structure for budget only
         let weddingData = {
-            id: null, // User ID for backend
-            coupleInfo: {
-                bride: { name: '', email: '', phone: '' },
-                groom: { name: '', email: '', phone: '' },
-                weddingDate: null,
-                location: '',
-                guestCount: 0,
-                theme: '',
-                notes: ''
-            },
-            preWeddingTasks: [
-                { id: 1, text: "Defina o orçamento: Estabeleça um valor máximo para gastar", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 2, text: "Escolha a data: Verifique a disponibilidade do local e dos convidados", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 3, text: "Selecione o local: Escolha um espaço que combine com o seu estilo", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 4, text: "Defina o tema: Escolha cores, decoração e estilo", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 5, text: "Crie a lista de convidados: Quem você quer que esteja lá?", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 6, text: "Planeje a cerimônia: Escolha o tipo de cerimônia e os detalhes", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 7, text: "Escolha os fornecedores: Catering, música, fotografia, etc.", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 8, text: "Planeje a logística: Transporte, acomodações, etc.", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
-            ],
-            finalPreparations: [
-                { id: 1, text: "Confirme os fornecedores", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 2, text: "Verifique os detalhes da cerimônia e recepção", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 3, text: "Prepare-se para imprevistos", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 4, text: "Aproveite o dia!", completed: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
-            ],
-            budgetItems: [
-                { id: 1, category: "Local & Decoração", amount: 0, percentage: 35, completed: false, estimatedCost: 0, actualCost: 0, notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 2, category: "Comida & Bebida", amount: 0, percentage: 30, completed: false, estimatedCost: 0, actualCost: 0, notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 3, category: "Fotografia & Vídeo", amount: 0, percentage: 15, completed: false, estimatedCost: 0, actualCost: 0, notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 4, category: "Música & Entretenimento", amount: 0, percentage: 8, completed: false, estimatedCost: 0, actualCost: 0, notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 5, category: "Vestimentas & Beleza", amount: 0, percentage: 7, completed: false, estimatedCost: 0, actualCost: 0, notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-                { id: 6, category: "Outros & Imprevistos", amount: 0, percentage: 5, completed: false, estimatedCost: 0, actualCost: 0, notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
-            ],
+            id: null,
             totalBudget: 0,
-            vendors: [],
-            guests: [],
-            timeline: [],
-            photos: [],
-            documents: [],
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            budgetItems: [
+                { id: 1, category: "Local & Decoração", amount: 0, percentage: 35, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
+                { id: 2, category: "Comida & Bebida", amount: 0, percentage: 30, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
+                { id: 3, category: "Fotografia & Vídeo", amount: 0, percentage: 15, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
+                { id: 4, category: "Música & Entretenimento", amount: 0, percentage: 8, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
+                { id: 5, category: "Vestimentas & Beleza", amount: 0, percentage: 7, completed: false, estimatedCost: 0, actualCost: 0, notes: '' },
+                { id: 6, category: "Outros & Imprevistos", amount: 0, percentage: 5, completed: false, estimatedCost: 0, actualCost: 0, notes: '' }
+            ]
         };
 
         // API Helper Functions
         async function apiCall(endpoint, method = 'GET', data = null) {
             if (USE_LOCAL_STORAGE) {
-                return null; // Skip API calls during development
+                return null;
             }
             
             try {
@@ -612,7 +241,6 @@
         
         // Backend API Methods
         const WeddingAPI = {
-            // User/Wedding Profile
             async createWedding(weddingData) {
                 return await apiCall('/wedding', 'POST', weddingData);
             },
@@ -625,33 +253,6 @@
                 return await apiCall(`/wedding/${id}`, 'PUT', data);
             },
             
-            async deleteWedding(id) {
-                return await apiCall(`/wedding/${id}`, 'DELETE');
-            },
-            
-            // Tasks Management
-            async getTasks(weddingId, type = null) {
-                const typeParam = type ? `?type=${type}` : '';
-                return await apiCall(`/wedding/${weddingId}/tasks${typeParam}`, 'GET');
-            },
-            
-            async createTask(weddingId, taskData) {
-                return await apiCall(`/wedding/${weddingId}/tasks`, 'POST', taskData);
-            },
-            
-            async updateTask(taskId, data) {
-                return await apiCall(`/tasks/${taskId}`, 'PUT', data);
-            },
-            
-            async deleteTask(taskId) {
-                return await apiCall(`/tasks/${taskId}`, 'DELETE');
-            },
-            
-            // Budget Management
-            async getBudgetItems(weddingId) {
-                return await apiCall(`/wedding/${weddingId}/budget`, 'GET');
-            },
-            
             async createBudgetItem(weddingId, budgetData) {
                 return await apiCall(`/wedding/${weddingId}/budget`, 'POST', budgetData);
             },
@@ -662,85 +263,6 @@
             
             async deleteBudgetItem(itemId) {
                 return await apiCall(`/budget/${itemId}`, 'DELETE');
-            },
-            
-            // Vendors Management
-            async getVendors(weddingId) {
-                return await apiCall(`/weddings/${weddingId}/vendors`, 'GET');
-            },
-            
-            async createVendor(weddingId, vendorData) {
-                return await apiCall(`/weddings/${weddingId}/vendors`, 'POST', vendorData);
-            },
-            
-            async updateVendor(weddingId, vendorId, data) {
-                return await apiCall(`/weddings/${weddingId}/vendors/${vendorId}`, 'PUT', data);
-            },
-            
-            async deleteVendor(weddingId, vendorId) {
-                return await apiCall(`/weddings/${weddingId}/vendors/${vendorId}`, 'DELETE');
-            },
-            
-            // Guests Management
-            async getGuests(weddingId) {
-                return await apiCall(`/weddings/${weddingId}/guests`, 'GET');
-            },
-            
-            async createGuest(weddingId, guestData) {
-                return await apiCall(`/weddings/${weddingId}/guests`, 'POST', guestData);
-            },
-            
-            async updateGuest(weddingId, guestId, data) {
-                return await apiCall(`/weddings/${weddingId}/guests/${guestId}`, 'PUT', data);
-            },
-            
-            async deleteGuest(weddingId, guestId) {
-                return await apiCall(`/weddings/${weddingId}/guests/${guestId}`, 'DELETE');
-            },
-            
-            // Timeline Management
-            async getTimeline(weddingId) {
-                return await apiCall(`/weddings/${weddingId}/timeline`, 'GET');
-            },
-            
-            async createTimelineEvent(weddingId, eventData) {
-                return await apiCall(`/weddings/${weddingId}/timeline`, 'POST', eventData);
-            },
-            
-            async updateTimelineEvent(weddingId, eventId, data) {
-                return await apiCall(`/weddings/${weddingId}/timeline/${eventId}`, 'PUT', data);
-            },
-            
-            async deleteTimelineEvent(weddingId, eventId) {
-                return await apiCall(`/weddings/${weddingId}/timeline/${eventId}`, 'DELETE');
-            },
-            
-            // Documents & Photos
-            async uploadDocument(weddingId, file, type) {
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('type', type);
-                
-                if (USE_LOCAL_STORAGE) return null;
-                
-                try {
-                    const response = await fetch(`${API_BASE_URL}/weddings/${weddingId}/documents`, {
-                        method: 'POST',
-                        body: formData
-                    });
-                    return await response.json();
-                } catch (error) {
-                    console.error('Upload Error:', error);
-                    return null;
-                }
-            },
-            
-            async getDocuments(weddingId) {
-                return await apiCall(`/weddings/${weddingId}/documents`, 'GET');
-            },
-            
-            async deleteDocument(weddingId, docId) {
-                return await apiCall(`/weddings/${weddingId}/documents/${docId}`, 'DELETE');
             }
         };
         
@@ -788,20 +310,10 @@
             }, 3000);
         }
 
-        const dailyTips = [
-            "Comece o planejamento com pelo menos 12 meses de antecedência para ter tempo de pesquisar e negociar os melhores preços.",
-            "Reserve 10% do orçamento para imprevistos - sempre surgem gastos não planejados.",
-            "Visite os locais pessoalmente e em horários similares ao do seu casamento para avaliar melhor.",
-            "Negocie pacotes fechados com fornecedores - geralmente sai mais barato que contratar serviços separados.",
-            "Considere casar em dias da semana ou meses de baixa temporada para economizar até 40%.",
-            "Mantenha uma planilha detalhada de todos os gastos para não perder o controle do orçamento.",
-            "Peça referências e veja trabalhos anteriores de todos os fornecedores antes de contratar."
-        ];
-
         // Load data from localStorage or API
         async function loadData() {
             if (USE_LOCAL_STORAGE) {
-                const saved = localStorage.getItem('weddingPlannerData');
+                const saved = localStorage.getItem('weddingBudgetData');
                 if (saved) {
                     weddingData = { ...weddingData, ...JSON.parse(saved) };
                 }
@@ -809,44 +321,40 @@
             }
             
             // Try to load from API
-            const urlParams = new URLSearchParams(window.location.search);
-            const weddingId = urlParams.get('id') || localStorage.getItem('currentWeddingId');
+            const weddingId = localStorage.getItem('currentWeddingId');
             
             if (weddingId) {
                 const apiData = await WeddingAPI.getWedding(weddingId);
                 if (apiData) {
-                    weddingData = { ...weddingData, ...apiData };
-                    localStorage.setItem('currentWeddingId', weddingId);
+                    weddingData = { 
+                        id: apiData.id,
+                        totalBudget: apiData.totalBudget,
+                        budgetItems: apiData.budgetItems || weddingData.budgetItems
+                    };
                 }
             }
         }
 
         // Save data to localStorage and API
-        async function saveData() {
-            weddingData.updatedAt = new Date().toISOString();
-            
+        async function saveData() {            
             if (USE_LOCAL_STORAGE) {
-                localStorage.setItem('weddingPlannerData', JSON.stringify(weddingData));
+                localStorage.setItem('weddingBudgetData', JSON.stringify(weddingData));
                 return;
             }
             
             // Save to API
             if (weddingData.id) {
-                await WeddingAPI.updateWedding(weddingData.id, weddingData);
+                await WeddingAPI.updateWedding(weddingData.id, {
+                    totalBudget: weddingData.totalBudget
+                });
             } else {
-                const newWedding = await WeddingAPI.createWedding(weddingData);
-                if (newWedding) {
-                    weddingData.id = newWedding.id;
-                    localStorage.setItem('currentWeddingId', newWedding.id);
-                    showSuccess('Planejamento salvo com sucesso!');
-                }
-            }
-        }
-
-        // Initialize wedding plan if needed
-        async function initializeWedding() {
-            if (!weddingData.id && !USE_LOCAL_STORAGE) {
-                const newWedding = await WeddingAPI.createWedding(weddingData);
+                const newWedding = await WeddingAPI.createWedding({
+                    totalBudget: weddingData.totalBudget,
+                    coupleInfo: {
+                        bride: { name: 'Leliane' },
+                        groom: { name: 'Gabriel' }
+                    }
+                });
                 if (newWedding) {
                     weddingData.id = newWedding.id;
                     localStorage.setItem('currentWeddingId', newWedding.id);
@@ -854,87 +362,18 @@
                     // Load the complete data from backend
                     const completeData = await WeddingAPI.getWedding(newWedding.id);
                     if (completeData) {
-                        weddingData = { ...weddingData, ...completeData };
-                        showSuccess('Bem-vindos! Seu planejamento foi criado.');
+                        weddingData.budgetItems = completeData.budgetItems || weddingData.budgetItems;
+                        showSuccess('Orçamento criado com sucesso!');
                     }
                 }
             }
         }
 
-        // Show specific section
-        function showSection(sectionName) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.add('hidden');
-                section.classList.remove('active');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionName + '-section').classList.remove('hidden');
-            document.getElementById(sectionName + '-section').classList.add('active');
-            
-            // Update navigation buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-rose-700');
-            });
-            
-            // Find the clicked button and highlight it
-            const clickedBtn = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
-            if (clickedBtn) {
-                clickedBtn.classList.add('bg-rose-700');
+        // Initialize wedding plan if needed
+        async function initializeWedding() {
+            if (!weddingData.id && !USE_LOCAL_STORAGE) {
+                await saveData();
             }
-        }
-
-        // Render pre-wedding tasks
-        function renderPreWeddingTasks() {
-            const container = document.getElementById('pre-wedding-list');
-            container.innerHTML = '';
-            
-            weddingData.preWeddingTasks.forEach(task => {
-                const taskElement = document.createElement('div');
-                taskElement.className = 'flex items-start sm:items-center justify-between p-2 sm:p-3 bg-rose-50 rounded-lg border border-rose-200 gap-2';
-                taskElement.innerHTML = `
-                    <div class="flex items-start sm:items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
-                        <input type="checkbox" ${task.completed ? 'checked' : ''} 
-                               onchange="toggleTask('preWeddingTasks', ${task.id})"
-                               class="w-4 h-4 sm:w-5 sm:h-5 text-rose-600 rounded focus:ring-rose-500 mt-0.5 sm:mt-0 shrink-0">
-                        <span class="${task.completed ? 'line-through text-gray-500' : 'text-gray-800'} text-sm sm:text-base break-words">${task.text}</span>
-                    </div>
-                    <button onclick="removeTask('preWeddingTasks', ${task.id})" 
-                            class="text-red-500 hover:text-red-700 transition p-1 shrink-0">
-                        <i class="fas fa-trash text-xs sm:text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(taskElement);
-            });
-            
-            updateProgress();
-        }
-
-        // Render final preparations
-        function renderFinalPreparations() {
-            const container = document.getElementById('final-preparations-list');
-            container.innerHTML = '';
-            
-            weddingData.finalPreparations.forEach(task => {
-                const taskElement = document.createElement('div');
-                taskElement.className = 'flex items-start sm:items-center justify-between p-2 sm:p-3 bg-gold-50 rounded-lg border border-gold-200 gap-2';
-                taskElement.innerHTML = `
-                    <div class="flex items-start sm:items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
-                        <input type="checkbox" ${task.completed ? 'checked' : ''} 
-                               onchange="toggleTask('finalPreparations', ${task.id})"
-                               class="w-4 h-4 sm:w-5 sm:h-5 text-gold-600 rounded focus:ring-gold-500 mt-0.5 sm:mt-0 shrink-0">
-                        <span class="${task.completed ? 'line-through text-gray-500' : 'text-gray-800'} text-sm sm:text-base break-words">${task.text}</span>
-                    </div>
-                    <button onclick="removeTask('finalPreparations', ${task.id})" 
-                            class="text-red-500 hover:text-red-700 transition p-1 shrink-0">
-                        <i class="fas fa-trash text-xs sm:text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(taskElement);
-            });
-            
-            updateProgress();
         }
 
         // Render budget items
@@ -952,26 +391,23 @@
                             <input type="checkbox" ${item.completed ? 'checked' : ''} 
                                    onchange="toggleBudgetItem(${item.id})"
                                    class="w-5 h-5 text-rose-600 rounded focus:ring-rose-500">
-                            <h4 class="font-semibold text-gray-800">${item.category}</h4>
+                            <span class="font-semibold text-gray-800">${item.category}</span>
+                            <span class="text-sm text-gray-600">(${item.percentage}%)</span>
                         </div>
                         <button onclick="removeBudgetItem(${item.id})" 
-                                class="text-red-500 hover:text-red-700 transition">
+                                class="text-red-500 hover:text-red-700 transition p-1">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
-                    <div class="grid grid-cols-3 gap-4 text-sm">
+                    <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
-                            <span class="text-gray-600">Porcentagem:</span>
-                            <div class="font-semibold">${item.percentage}%</div>
+                            <label class="text-xs text-gray-600">Valor Alocado</label>
+                            <div class="text-lg font-bold text-green-600">R$ ${budgetAmount.toLocaleString('pt-BR')}</div>
                         </div>
                         <div>
-                            <span class="text-gray-600">Orçado:</span>
-                            <div class="font-semibold text-green-600">R$ ${budgetAmount.toLocaleString('pt-BR')}</div>
-                        </div>
-                        <div>
-                            <span class="text-gray-600">Gasto:</span>
+                            <label class="text-xs text-gray-600">Valor Gasto</label>
                             <input type="number" value="${item.amount}" 
-                                   onchange="updateBudgetAmount(${item.id}, this.value)"
+                                   onchange="updateBudgetItemAmount(${item.id}, this.value)"
                                    class="w-full px-2 py-1 border border-gray-300 rounded text-rose-600 font-semibold">
                         </div>
                     </div>
@@ -991,99 +427,65 @@
             calculateBudget();
         }
 
-        // Add new task
-        async function addTask(listType) {
-            const inputId = listType === 'pre-wedding' ? 'pre-new-task' : 'final-new-task';
-            const input = document.getElementById(inputId);
-            const text = input.value.trim();
+        // Calculate budget totals
+        function calculateBudget() {
+            const totalBudgetInput = document.getElementById('total-budget');
+            const totalBudget = parseFloat(totalBudgetInput.value) || 0;
             
-            if (text) {
-                const taskList = listType === 'pre-wedding' ? 'preWeddingTasks' : 'finalPreparations';
-                const newId = Math.max(...weddingData[taskList].map(t => t.id), 0) + 1;
-                
-                const newTask = {
-                    id: newId,
-                    text: text,
-                    completed: false,
-                    type: listType === 'pre-wedding' ? 'pre_wedding' : 'final_preparation',
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                };
-                
-                // Add to local data
-                weddingData[taskList].push(newTask);
-                
-                // Save to API if not using local storage
-                if (!USE_LOCAL_STORAGE && weddingData.id) {
-                    const apiTask = await WeddingAPI.createTask(weddingData.id, newTask);
-                    if (apiTask) {
-                        // Update with API response ID
-                        weddingData[taskList][weddingData[taskList].length - 1].id = apiTask.id;
-                        showSuccess('Tarefa adicionada com sucesso!');
-                    } else {
-                        showError('Erro ao salvar tarefa no servidor');
-                    }
-                }
-                
-                input.value = '';
-                await saveData();
-                
-                if (listType === 'pre-wedding') {
-                    renderPreWeddingTasks();
-                } else {
-                    renderFinalPreparations();
-                }
-            }
-        }
-
-        // Toggle task completion
-        async function toggleTask(listType, taskId) {
-            const task = weddingData[listType].find(t => t.id === taskId);
-            if (task) {
-                task.completed = !task.completed;
-                task.updatedAt = new Date().toISOString();
-                
-                // Update API if not using local storage
-                if (!USE_LOCAL_STORAGE && weddingData.id) {
-                    const success = await WeddingAPI.updateTask(taskId, { completed: task.completed });
-                    if (!success) {
-                        // Revert change if API call failed
-                        task.completed = !task.completed;
-                        showError('Erro ao atualizar tarefa no servidor');
-                        return;
-                    }
-                }
-                
-                await saveData();
-                updateProgress();
-                updateStatistics();
-            }
-        }
-
-        // Remove task
-        async function removeTask(listType, taskId) {
-            // Remove from API first if not using local storage
-            if (!USE_LOCAL_STORAGE && weddingData.id) {
-                const success = await WeddingAPI.deleteTask(taskId);
-                if (!success) {
-                    showError('Erro ao remover tarefa do servidor');
-                    return;
-                }
-                showSuccess('Tarefa removida com sucesso!');
-            }
+            weddingData.totalBudget = totalBudget;
             
-            weddingData[listType] = weddingData[listType].filter(t => t.id !== taskId);
-            await saveData();
+            const totalSpent = weddingData.budgetItems.reduce((sum, item) => sum + (item.amount || 0), 0);
+            const remaining = totalBudget - totalSpent;
+            const percentage = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
             
-            if (listType === 'preWeddingTasks') {
-                renderPreWeddingTasks();
+            document.getElementById('total-spent').textContent = `R$ ${totalSpent.toLocaleString('pt-BR')}`;
+            document.getElementById('remaining-budget').textContent = `R$ ${remaining.toLocaleString('pt-BR')}`;
+            document.getElementById('budget-percentage').textContent = `${percentage.toFixed(1)}%`;
+            document.getElementById('budget-progress').style.width = `${Math.min(percentage, 100)}%`;
+            
+            // Update remaining budget color
+            const remainingEl = document.getElementById('remaining-budget');
+            if (remaining < 0) {
+                remainingEl.className = remainingEl.className.replace('text-green-600', 'text-red-600');
             } else {
-                renderFinalPreparations();
+                remainingEl.className = remainingEl.className.replace('text-red-600', 'text-green-600');
             }
-            updateStatistics();
+            
+            saveData();
+            renderBudgetItems();
         }
 
-        // Add budget item
+        // Toggle budget item completion
+        async function toggleBudgetItem(itemId) {
+            const item = weddingData.budgetItems.find(i => i.id === itemId);
+            if (item) {
+                item.completed = !item.completed;
+                
+                if (!USE_LOCAL_STORAGE && weddingData.id) {
+                    await WeddingAPI.updateBudgetItem(itemId, { completed: item.completed });
+                }
+                
+                await saveData();
+                renderBudgetItems();
+            }
+        }
+
+        // Update budget item amount
+        async function updateBudgetItemAmount(itemId, newAmount) {
+            const item = weddingData.budgetItems.find(i => i.id === itemId);
+            if (item) {
+                item.amount = parseFloat(newAmount) || 0;
+                
+                if (!USE_LOCAL_STORAGE && weddingData.id) {
+                    await WeddingAPI.updateBudgetItem(itemId, { amount: item.amount });
+                }
+                
+                await saveData();
+                calculateBudget();
+            }
+        }
+
+        // Add new budget item
         async function addBudgetItem() {
             const category = prompt('Nome da categoria:');
             const percentage = parseFloat(prompt('Porcentagem do orçamento (0-100):'));
@@ -1099,188 +501,52 @@
                     completed: false,
                     estimatedCost: 0,
                     actualCost: 0,
-                    notes: '',
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
+                    notes: ''
                 };
                 
                 weddingData.budgetItems.push(newBudgetItem);
                 
-                // Save to API if not using local storage
                 if (!USE_LOCAL_STORAGE && weddingData.id) {
                     const apiBudgetItem = await WeddingAPI.createBudgetItem(weddingData.id, newBudgetItem);
                     if (apiBudgetItem) {
                         weddingData.budgetItems[weddingData.budgetItems.length - 1].id = apiBudgetItem.id;
-                        showSuccess('Item de orçamento adicionado com sucesso!');
-                    } else {
-                        showError('Erro ao salvar item de orçamento no servidor');
+                        showSuccess('Item de orçamento adicionado!');
                     }
                 }
                 
                 await saveData();
                 renderBudgetItems();
-            }
-        }
-
-        // Toggle budget item completion
-        async function toggleBudgetItem(itemId) {
-            const item = weddingData.budgetItems.find(i => i.id === itemId);
-            if (item) {
-                item.completed = !item.completed;
-                item.updatedAt = new Date().toISOString();
-                
-                // Update API if not using local storage
-                if (!USE_LOCAL_STORAGE && weddingData.id) {
-                    const success = await WeddingAPI.updateBudgetItem(weddingData.id, itemId, item);
-                    if (!success) {
-                        item.completed = !item.completed;
-                        showError('Erro ao atualizar item de orçamento no servidor');
-                        return;
-                    }
-                }
-                
-                await saveData();
-                updateProgress();
-                updateStatistics();
             }
         }
 
         // Remove budget item
         async function removeBudgetItem(itemId) {
-            // Remove from API first if not using local storage
             if (!USE_LOCAL_STORAGE && weddingData.id) {
-                const success = await WeddingAPI.deleteBudgetItem(weddingData.id, itemId);
+                const success = await WeddingAPI.deleteBudgetItem(itemId);
                 if (!success) {
-                    showError('Erro ao remover item de orçamento do servidor');
+                    showError('Erro ao remover item do servidor');
                     return;
                 }
-                showSuccess('Item de orçamento removido com sucesso!');
             }
             
             weddingData.budgetItems = weddingData.budgetItems.filter(i => i.id !== itemId);
             await saveData();
             renderBudgetItems();
-            updateStatistics();
+            showSuccess('Item removido com sucesso!');
         }
-
-        // Update budget amount
-        async function updateBudgetAmount(itemId, amount) {
-            const item = weddingData.budgetItems.find(i => i.id === itemId);
-            if (item) {
-                item.amount = parseFloat(amount) || 0;
-                item.actualCost = item.amount;
-                item.updatedAt = new Date().toISOString();
-                
-                // Update API if not using local storage
-                if (!USE_LOCAL_STORAGE && weddingData.id) {
-                    await WeddingAPI.updateBudgetItem(weddingData.id, itemId, item);
-                }
-                
-                await saveData();
-                calculateBudget();
-                renderBudgetItems();
-            }
-        }
-
-        // Calculate budget
-        function calculateBudget() {
-            const totalBudget = parseFloat(document.getElementById('total-budget').value) || 0;
-            weddingData.totalBudget = totalBudget;
-            
-            const totalSpent = weddingData.budgetItems.reduce((sum, item) => sum + item.amount, 0);
-            const remaining = totalBudget - totalSpent;
-            const percentage = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
-            
-            document.getElementById('total-spent').textContent = `R$ ${totalSpent.toLocaleString('pt-BR')}`;
-            document.getElementById('remaining-budget').textContent = `R$ ${remaining.toLocaleString('pt-BR')}`;
-            document.getElementById('budget-progress').style.width = `${Math.min(percentage, 100)}%`;
-            document.getElementById('budget-percentage').textContent = `${percentage.toFixed(1)}%`;
-            document.getElementById('chart-total').textContent = `R$ ${totalBudget.toLocaleString('pt-BR')}`;
-            
-            saveData();
-            updateProgress();
-        }
-
-        // Update progress bars
-        function updateProgress() {
-            // Pre-wedding progress
-            const preCompleted = weddingData.preWeddingTasks.filter(t => t.completed).length;
-            const preTotal = weddingData.preWeddingTasks.length;
-            const prePercentage = preTotal > 0 ? (preCompleted / preTotal) * 100 : 0;
-            
-            document.getElementById('pre-progress').style.width = `${prePercentage}%`;
-            document.getElementById('pre-percentage').textContent = `${prePercentage.toFixed(0)}%`;
-            document.getElementById('overall-pre-progress').style.width = `${prePercentage}%`;
-            document.getElementById('overall-pre-percentage').textContent = `${prePercentage.toFixed(0)}%`;
-            
-            // Final preparations progress
-            const finalCompleted = weddingData.finalPreparations.filter(t => t.completed).length;
-            const finalTotal = weddingData.finalPreparations.length;
-            const finalPercentage = finalTotal > 0 ? (finalCompleted / finalTotal) * 100 : 0;
-            
-            document.getElementById('final-progress').style.width = `${finalPercentage}%`;
-            document.getElementById('final-percentage').textContent = `${finalPercentage.toFixed(0)}%`;
-            document.getElementById('overall-final-progress').style.width = `${finalPercentage}%`;
-            document.getElementById('overall-final-percentage').textContent = `${finalPercentage.toFixed(0)}%`;
-            
-            // Budget progress
-            const budgetCompleted = weddingData.budgetItems.filter(i => i.completed).length;
-            const budgetTotal = weddingData.budgetItems.length;
-            const budgetPercentage = budgetTotal > 0 ? (budgetCompleted / budgetTotal) * 100 : 0;
-            
-            document.getElementById('overall-budget-progress').style.width = `${budgetPercentage}%`;
-            document.getElementById('overall-budget-percentage').textContent = `${budgetPercentage.toFixed(0)}%`;
-            
-            // Total progress
-            const totalPercentage = (prePercentage + finalPercentage + budgetPercentage) / 3;
-            document.getElementById('total-progress-bar').style.width = `${totalPercentage}%`;
-            document.getElementById('total-progress-percentage').textContent = `${totalPercentage.toFixed(0)}%`;
-        }
-
-        // Update statistics
-        function updateStatistics() {
-            const totalCompleted = weddingData.preWeddingTasks.filter(t => t.completed).length + 
-                                  weddingData.finalPreparations.filter(t => t.completed).length;
-            const totalTasks = weddingData.preWeddingTasks.length + weddingData.finalPreparations.length;
-            const totalRemaining = totalTasks - totalCompleted;
-            const budgetItems = weddingData.budgetItems.length;
-            
-            document.getElementById('tasks-completed').textContent = totalCompleted;
-            document.getElementById('tasks-remaining').textContent = totalRemaining;
-            document.getElementById('budget-items-planned').textContent = budgetItems;
-            
-            // Random daily tip
-            const randomTip = dailyTips[Math.floor(Math.random() * dailyTips.length)];
-            document.getElementById('daily-tip').textContent = randomTip;
-        }
-
-        // Event listeners for Enter key
-        document.getElementById('pre-new-task').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') addTask('pre-wedding');
-        });
-        
-        document.getElementById('final-new-task').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') addTask('final-preparations');
-        });
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', async function() {
             await loadData();
             await initializeWedding();
             
-            renderPreWeddingTasks();
-            renderFinalPreparations();
             renderBudgetItems();
             calculateBudget();
-            updateStatistics();
             
             // Set total budget if saved
             if (weddingData.totalBudget > 0) {
                 document.getElementById('total-budget').value = weddingData.totalBudget;
             }
-            
-            // Show planning section by default
-            showSection('planning');
         });
     </script>
 </body>
